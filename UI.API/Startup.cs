@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL;
+using BLL.IBll;
+using DAL;
+using DAL.IDal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +34,11 @@ namespace UI.API
                 {
                     configure.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
                 });
+            //×¢²á
+            services.AddTransient<IGuanDal,GuanDal>();
+            services.AddTransient<IGuanBLL, GuanBll>();
             //¿çÓòÅäÖÃ
-            //MVCµ÷ÓÃApi
+            
             services.AddCors(options =>
            options.AddPolicy("cor",
            p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
