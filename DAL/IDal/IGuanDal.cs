@@ -7,5 +7,6 @@ namespace DAL.IDal
     public interface IGuanDal
     {
         List<UnitModel> UnitBang();
+        
     }
 }
