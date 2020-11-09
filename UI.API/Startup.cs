@@ -31,6 +31,7 @@ namespace UI.API
                     configure.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
                 });
             //¿çÓòÅäÖÃ
+            //MVCµ÷ÓÃApi
             services.AddCors(options =>
            options.AddPolicy("cor",
            p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
