@@ -7,7 +7,7 @@ namespace Model
     /// </summary>
     public class UnitModel
     {
-        public int UnitId   { get; set; }
-        public string UnitName { get; set; }
+        public int UnitId   { get; set; }   //单位ID
+        public string UnitName { get; set; }//单位名称
     }
 }
