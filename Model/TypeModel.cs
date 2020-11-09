@@ -10,6 +10,6 @@ namespace Model
     public class TypeModel
     {
         public int TypedId   { get; set; }
-        public int TypedName { get; set; }
+        public string TypedName { get; set; }
     }
 }

@@ -21,6 +21,21 @@ namespace Model
         public int GoodsSize    { get; set; }
         public string GoodsPeople  { get; set; }
         public int GoodsState   { get; set; }
-     
+
+        //单位类
+        public int UnitId { get; set; }
+        public string UnitName { get; set; }
+
+        //供应商类
+        public int SuppleId { get; set; }
+        public string SuppleName { get; set; }
+        public string SuppleAdress { get; set; }
+        public string SupplePhone { get; set; }
+        public string SupplePople { get; set; }
+
+        //类型类
+        public int TypedId { get; set; }
+        public string TypedName { get; set; }
+
     }
 }
