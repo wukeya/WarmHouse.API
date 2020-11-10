@@ -170,5 +170,43 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
+
+        /*
+        //添加报损
+        [Route("ReportAdd")]
+        [HttpPost]
+        public int PurchaseAdd(PurchaseModel model)
+        {
+            return _ibll.PurchaseAdd(model);
+        }
+        //显示报损
+        [Route("ReportShow")]
+        [HttpGet]
+        public List<PurchaseModel> PurchaseShow(int purchaseId, int purchaseUid, int purchasePid, string purchaseCode, DateTime purchaseTime, int purchaseState, out int pagCount)
+        {
+            return _ibll.PurchaseShow(purchaseId, purchaseUid, purchasePid, purchaseCode, purchaseTime, purchaseState,out pagCount);
+        }
+        //删除报损
+        [Route("ReportShan")]
+        [HttpGet]
+        public int PurchaseShan(string ids)
+        {
+            return _ibll.PurchaseShan(ids);
+        }
+        //反填报损
+        [Route("ReportFan")]
+        [HttpGet]
+        public PurchaseModel PurchaseFan(int id)
+        {
+            return _ibll.PurchaseFan(id);
+        }
+        //修改报损
+        [Route("ReportUpdate")]
+        [HttpPost]
+        public int PurchaseUpdate(PurchaseModel model)
+        {
+            return _ibll.PurchaseUpdate(model);
+        }
+        */
     }
 }

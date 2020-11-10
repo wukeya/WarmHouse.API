@@ -15,6 +15,8 @@ namespace BLL
         {
             _idal = dal;
         }
+        //商品
+        #region
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {
@@ -25,26 +27,22 @@ namespace BLL
         {
             return _idal.GoodsShan(ids);
         }
-
         //反填商品
         public GoodsModel GoodsFan(int id)
         {
             return _idal.GoodsFan(id);
         }
-
         //修改商品
 
         public int GoodsUpdate(GoodsModel model)
         {
             return _idal.GoodsUpdate(model);
         }
-
         //显示商品
         public List<GoodsModel> GooodsShow(int pagIndex, int pagSize, int typeId, string name, out int pagCount)
         {
             return _idal.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
         }
-
         //绑定单位
         public List<UnitModel> UnitBang()
         {
@@ -60,6 +58,9 @@ namespace BLL
         {
             return _idal.SuppleBang();
         }
+        #endregion
+        //设备
+        #region
         //添加设备
         public int EquipmentAdd(EquipmentModel model)
         {
@@ -85,6 +86,9 @@ namespace BLL
         {
             return _idal.EquipmentUpdate(model);
         }
+        #endregion
+        //报损
+        #region
         //添加报损
         public int ReportAdd(ReportModel model)
         {
@@ -110,5 +114,34 @@ namespace BLL
         {
             return _idal.ReportUpdate(model);
         }
+        #endregion
+        //退货
+        #region
+        //添加退货信息
+        public int ReturndAdd(ReturndModel model)
+        {
+            return _idal.ReturndAdd(model);
+        }
+        //显示退货
+        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
+        {
+            return _idal.ReturndShow(ReturnId, ReturnGid, ReturnPid, RetrunNum,out pagCount);
+        }
+        //删除退货
+        public int ReturndShan(string ids)
+        {
+            return _idal.ReportShan(ids);
+        }
+        //退货反填
+        public ReturndModel ReturndFan(int id)
+        {
+            return _idal.ReturndFan(id);
+        }
+        //修改退货
+        public int ReturndUpdate(ReturndModel model)
+        {
+            return _idal.ReturndUpdate(model);
+        }
+        #endregion
     }
 }

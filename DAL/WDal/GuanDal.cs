@@ -22,7 +22,10 @@ namespace DAL
         public  string conStr { get {return _configuration.GetConnectionString("a"); } set { } }
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
-        //添加商品
+
+        //商品
+        #region
+        //添加商品,
         public int GoodsAdd(GoodsModel model)
         {
             string sql = $"insert into Goods values('{model.GoodsName}','{model.GoodsTid}','{model.GoodsSid}','{model.GoodsImg}','{model.GoodsCode}','{model.GoodsUid}','{model.GoodsNum}','{model.GoodsMoney}','{model.GoodsSize}','{model.GoodsPeople}','{model.GoodsState}')";
@@ -40,7 +43,6 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        
         //反填商品
         public GoodsModel GoodsFan(int id)
         {
@@ -50,9 +52,7 @@ namespace DAL
                 return connection.Query<GoodsModel>(sql).ToList().FirstOrDefault();
             }
         }
-
        //修改商品
-
         public int GoodsUpdate(GoodsModel model)
         {
             string sql = $"update Goods set GoodsName='{model.GoodsName}',GoodsTid='{model.GoodsTid}',GoodsSid='{model.GoodsSid}',GoodsImg='{model.GoodsImg}',GoodsCode='{model.GoodsCode}',GoodsUid='{model.GoodsUid}',GoodsNum='{model.GoodsNum}',GoodsMoney='{model.GoodsMoney}',GoodsSize='{model.GoodsSid}',GoodsPeople='{model.GoodsPeople}',GoodsState='{model.GoodsState}' where GoodsId={model.GoodsId}";
@@ -61,7 +61,6 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-
         //显示商品
         public List<GoodsModel> GooodsShow(int pagIndex,int pagSize,int typeId,string name,out int pagCount)
         {
@@ -82,7 +81,6 @@ namespace DAL
             List<GoodsModel> list = dBHelper.DataTableToList<GoodsModel>(tb);
             return list;
         }
-
         //绑定单位
         public List<UnitModel> UnitBang()
         {
@@ -110,6 +108,9 @@ namespace DAL
                 return connection.Query<SuppleModel>(sql).ToList();
             }
         }
+        #endregion
+        //设备
+        #region
         //添加设备
         public int EquipmentAdd(EquipmentModel model) 
         {
@@ -164,6 +165,9 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        #endregion
+        //报损
+        #region
         //添加报损
         public int ReportAdd(ReportModel model) 
         {
@@ -199,7 +203,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        //反弹报损
+        //反填报损
         public ReportModel ReportFan(int id) 
         {
             string sql = $"select * from Reported where ReportedId={id}";
@@ -217,5 +221,65 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        #endregion
+        //退货
+        #region
+        //添加退货信息
+        public int ReturndAdd(ReturndModel model)
+        {
+            string sql = $"insert into Returnd values('{model.ReturnGid}','{model.ReturnPid}','{model.RetrunNum}')";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示退货
+        public List<ReturndModel> ReturndShow(int returnId, int returnGid, int returnPid, int retrunNum, out int ragCount)
+        {
+            ragCount = 0;
+            string sql = "ReturndPag";
+            //实例化一个字典
+            Dictionary<string, object> pairs = new Dictionary<string, object>();
+            pairs.Add("@returnId", returnId);
+            pairs.Add("@returnGid", returnGid);
+            pairs.Add("@returnPid", returnPid);
+            pairs.Add("@retrunNum", retrunNum);
+            pairs.Add("@ragCount", ragCount);
+            //调用储存过程
+            DataTable tb = dBHelper.GetProc(sql, pairs, out ragCount);
+            //吧DataTable转化为list
+            List<ReturndModel> list = dBHelper.DataTableToList<ReturndModel>(tb);
+            return list;
+        }
+        //删除退货
+        public int ReturndShan(string ids)
+        {
+            string sql = $"delete from Returnd where ReturnId like ({ids})";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //退货反填
+        public ReturndModel ReturndFan(int id)
+        {
+            string sql = $"select * from Returnd where ReturnId={id}";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Query<ReturndModel>(sql).ToList().FirstOrDefault();
+            }
+        }
+        //修改退货
+        public int ReturndUpdate(ReturndModel model)
+        {
+            string sql = $"update Returnd set ReturnGid='{model.ReturnGid}',ReturnPid='{model.ReturnPid}',RetrunNum='{model.RetrunNum}' where ReturnId='{model.ReturnId}'";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        #endregion
+
+
     }
 }
