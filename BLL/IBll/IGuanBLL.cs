@@ -15,6 +15,7 @@ namespace BLL.IBll
         int GoodsUpdate(GoodsModel model);
         List<TypeModel> TypeBanag();
         List<SuppleModel> SuppleBang();
+        int GoodsUpdateState(int state, int id);
         //设备
         int EquipmentAdd(EquipmentModel model);
         List<EquipmentModel> EquipmentShow(int pagIndex, int pagSize, string name, out int pagCount);

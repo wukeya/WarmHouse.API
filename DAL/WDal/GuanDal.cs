@@ -82,6 +82,15 @@ namespace DAL
             List<GoodsModel> list = dBHelper.DataTableToList<GoodsModel>(tb);
             return list;
         }
+        //修改商品状态
+        public int GoodsUpdateState(int state, int id) 
+        {
+            string sql = $"update Goods set GoodsState={state} where GoodsId={id}";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
 
         //绑定单位
         public List<UnitModel> UnitBang()

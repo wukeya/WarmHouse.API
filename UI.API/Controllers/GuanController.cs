@@ -9,6 +9,7 @@ using BLL;
 using BLL.IBll;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace UI.API.Controllers
 {
@@ -19,9 +20,10 @@ namespace UI.API.Controllers
         public IWebHostEnvironment _iwebh;
         //依赖注入
         private IGuanBLL _ibll;
-        public GuanController(IGuanBLL ibll)
+        public GuanController(IGuanBLL ibll,IWebHostEnvironment iwebh)
         {
             _ibll = ibll;
+            _iwebh = iwebh;
         }
         //绑定单位
         [Route("UnitBang")]
@@ -33,8 +35,10 @@ namespace UI.API.Controllers
         [Route("GoodsAdd")]
         [HttpPost]
         //添加商品
-        public int GoodsAdd(GoodsModel model)
+        public int GoodsAdd(string ff="")
         {
+            GoodsModel model= JsonConvert.DeserializeObject<GoodsModel>(ff);
+            model.GoodsState = 1;
             var file = Request.Form.Files;
             foreach (var item in file)
             {
@@ -70,15 +74,30 @@ namespace UI.API.Controllers
         //修改商品
         [Route("GoodsUpdate")]
         [HttpPost]
-        public int GoodsUpdate(GoodsModel model)
+        public int GoodsUpdate(string ff="")
         {
+            GoodsModel model = JsonConvert.DeserializeObject<GoodsModel>(ff);
+            var file = Request.Form.Files;
+            foreach (var item in file)
+            {
+                if (item.Length > 0)
+                {
+                    var wort = _iwebh.ContentRootPath;
+                    var filename = Path.Combine(wort, "wwwroot/img/", item.FileName);
+                    model.GoodsImg = "/img/" + item.FileName;
+                    using (var s = new FileStream(filename, FileMode.Create))
+                    {
+                        item.CopyTo(s);
+                    }
+                }
+            }
             return _ibll.GoodsUpdate(model);
         }
 
         //显示商品
         [Route("GoodsShow")]
         [HttpGet]
-        public IActionResult GooodsShow(int pagIndex=1, int pagSize=3, int typeId=0, string name="")
+        public  IActionResult GooodsShow(int pagIndex=1, int pagSize=3, int typeId=0, string name="")
         {
             if (name==null)
             {
@@ -88,8 +107,14 @@ namespace UI.API.Controllers
             List<GoodsModel> list= _ibll.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
             return Ok(new { a = list, pagCount = pagCount });
         }
+        //修改商品状态
+        [Route("GoodsUpdateState")]
+        [HttpGet]
+        public int GoodsUpdateState(int state, int id)
+        {
+            return _ibll.GoodsUpdateState(state, id);
+        }
 
-       
         //绑定类型
         [Route("TypeBang")]
         [HttpGet]
@@ -114,7 +139,7 @@ namespace UI.API.Controllers
         //显示设备
         [Route("EquipmentShow")]
         [HttpGet]
-        public List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
+        public  List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
         {
             int pagCount = 0;
             return _ibll.EquipmentShow(pagIndex, pagSize, name, out pagCount);

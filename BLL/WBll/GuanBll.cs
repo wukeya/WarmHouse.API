@@ -44,6 +44,11 @@ namespace BLL
         {
             return _idal.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
         }
+        //修改商品状态
+        public int GoodsUpdateState(int state, int id) 
+        {
+            return _idal.GoodsUpdateState(state, id);
+        }
 
         //绑定单位
         public List<UnitModel> UnitBang()
