@@ -132,7 +132,7 @@ namespace BLL
         {
             return _idal.ReportShan(ids);
         }
-        //退货反填
+        //退货反填Returnd
         public ReturndModel ReturndFan(int id)
         {
             return _idal.ReturndFan(id);
