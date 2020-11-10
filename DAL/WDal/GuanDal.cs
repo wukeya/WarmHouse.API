@@ -37,7 +37,7 @@ namespace DAL
         //删除商品
         public int GoodsShan(string ids)
         {
-            string sql = $"delete from Goods where GoodsId like ({ids})";
+            string sql = $"delete from Goods where GoodsId in ({ids})";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Execute(sql);
@@ -141,7 +141,7 @@ namespace DAL
         //删除设备
         public int EquipmentShan(string ids) 
         {
-            string sql = $"delete from Equipment where EquipmentId like ({ids})";
+            string sql = $"delete from Equipment where EquipmentId in ({ids})";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Execute(sql);
@@ -197,7 +197,7 @@ namespace DAL
         //删除报损
         public int ReportShan(string ids) 
         {
-            string sql = $"delete from Reported where ReportedId like ({ids})";
+            string sql = $"delete from Reported where ReportedId in ({ids})";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Execute(sql);

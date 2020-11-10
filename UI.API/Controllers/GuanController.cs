@@ -16,7 +16,7 @@ namespace UI.API.Controllers
     [ApiController]
     public class GuanController : ControllerBase
     {
-        private IWebHostEnvironment _iwebh;
+        public IWebHostEnvironment _iwebh;
         //依赖注入
         private IGuanBLL _ibll;
         public GuanController(IGuanBLL ibll)
@@ -78,10 +78,15 @@ namespace UI.API.Controllers
         //显示商品
         [Route("GoodsShow")]
         [HttpGet]
-        public List<GoodsModel> GooodsShow(int pagIndex=1, int pagSize=3, int typeId=5, string name="")
+        public IActionResult GooodsShow(int pagIndex=1, int pagSize=3, int typeId=0, string name="")
         {
+            if (name==null)
+            {
+                name = "";
+            }
             int pagCount = 0;
-            return _ibll.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
+            List<GoodsModel> list= _ibll.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
+            return Ok(new { a = list, pagCount = pagCount });
         }
 
        
