@@ -11,15 +11,12 @@ namespace DAL
 {
     public  class DBHelper
     {
-        private IConfiguration _configuration;
+        public IConfiguration _configurtion;
         public DBHelper(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _configurtion = configuration;
         }
-        //连接数据库
-        public string strConn { get { return _configuration.GetConnectionString("a"); } set { } }
-        
-        //public static string strConn = ConfigurationManager.ConnectionStrings["SQLConnString"].ConnectionString;
+        public string strConn{ get { return _configurtion.GetConnectionString("a"); } set { } }
 
         /// <summary>
         /// 增、删、改
@@ -254,7 +251,7 @@ namespace DAL
         /// <typeparam name="T"></typeparam>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private  List<T> DataTableToList<T>(DataTable dt)
+        public  List<T> DataTableToList<T>(DataTable dt)
         {
             Type t = typeof(T);//获取类型
             //获取所有属性
@@ -312,7 +309,7 @@ namespace DAL
                 foreach (var item in pairs)
                 {
                     SqlParameter parameter = new SqlParameter();
-                    if (item.Key == "@count")
+                    if (item.Key == "@pagCount")
                     {
                         parameter.Direction = ParameterDirection.Output;
 
@@ -336,7 +333,7 @@ namespace DAL
                 {
                     tb = set.Tables[0];
                 }
-                o = Convert.ToInt32(command.Parameters["@count"].Value);
+                o = Convert.ToInt32(command.Parameters["@pagCount"].Value);
                 return tb;
             }
         }
