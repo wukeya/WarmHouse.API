@@ -9,11 +9,11 @@ namespace Model
     /// </summary>
     public class SuppleModel
     {
-        public int SuppleId     { get; set; }
-        public string SuppleName   { get; set; }
-        public string SuppleAdress { get; set; }
-        public string SupplePhone  { get; set; }
-        public string SupplePople  { get; set; }
-     
+        public int    SuppleId     { get; set; }//供应商iD
+        public string SuppleName   { get; set; }//供应商名称
+        public string SuppleAdress { get; set; }//供应商地址
+        public string SupplePhone  { get; set; }//供应商电话
+        public string SupplePople  { get; set; }//供应商负责人
+
     }
 }
