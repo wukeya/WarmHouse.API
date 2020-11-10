@@ -23,6 +23,8 @@ namespace UI.API.Controllers
         {
             _ibll = ibll;
         }
+        //商品
+        #region
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]
@@ -88,7 +90,6 @@ namespace UI.API.Controllers
             List<GoodsModel> list= _ibll.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
             return Ok(new { a = list, pagCount = pagCount });
         }
-
        
         //绑定类型
         [Route("TypeBang")]
@@ -104,6 +105,10 @@ namespace UI.API.Controllers
         {
             return _ibll.SuppleBang();
         }
+        #endregion
+
+        //设备
+        #region
         [Route("EquipmentAdd")]
         [HttpPost]
         //添加设备
@@ -140,6 +145,10 @@ namespace UI.API.Controllers
         {
             return _ibll.EquipmentUpdate(model);
         }
+        #endregion
+
+        //报损
+        #region
         //添加报损
         [Route("ReportAdd")]
         [HttpPost]
@@ -175,43 +184,45 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
+        #endregion
 
-        /*
-        //添加报损
-        [Route("ReportAdd")]
+        //退货
+        #region
+        //添加退货
+        [Route("ReturndAdd")]
         [HttpPost]
-        public int PurchaseAdd(PurchaseModel model)
+        public int ReturndAdd(ReturndModel model)
         {
-            return _ibll.PurchaseAdd(model);
+            return _ibll.ReturndAdd(model);
         }
-        //显示报损
+        //显示退货
         [Route("ReportShow")]
         [HttpGet]
-        public List<PurchaseModel> PurchaseShow(int purchaseId, int purchaseUid, int purchasePid, string purchaseCode, DateTime purchaseTime, int purchaseState, out int pagCount)
+        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
         {
-            return _ibll.PurchaseShow(purchaseId, purchaseUid, purchasePid, purchaseCode, purchaseTime, purchaseState,out pagCount);
+            return _ibll.ReturndShow(ReturnId, ReturnGid, ReturnPid, RetrunNum, out pagCount);
         }
-        //删除报损
-        [Route("ReportShan")]
+        //删除退货
+        [Route("ReturndShan")]
         [HttpGet]
-        public int PurchaseShan(string ids)
+        public int ReturndShan(string ids)
         {
-            return _ibll.PurchaseShan(ids);
+            return _ibll.ReturndShan(ids);
         }
-        //反填报损
-        [Route("ReportFan")]
+        //反填退货
+        [Route("ReturndFan")]
         [HttpGet]
-        public PurchaseModel PurchaseFan(int id)
+        public ReturndModel ReturndFan(int id)
         {
-            return _ibll.PurchaseFan(id);
+            return _ibll.ReturndFan(id);
         }
-        //修改报损
-        [Route("ReportUpdate")]
+        //修改退货
+        [Route("ReturndUpdate")]
         [HttpPost]
-        public int PurchaseUpdate(PurchaseModel model)
+        public int ReturndUpdate(ReturndModel model)
         {
-            return _ibll.PurchaseUpdate(model);
+            return _ibll.ReturndUpdate(model);
         }
-        */
+        #endregion
     }
 }
