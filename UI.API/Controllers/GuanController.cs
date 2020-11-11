@@ -200,5 +200,42 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
+        //添加订单和详情表
+        [Route("OrderDeitAllAdd")]
+        [HttpPost]
+        public int OrderDeitAllAdd(string ff = "")
+        {
+            try
+            {
+                //把字符串序列化为集合
+                PurchaseModel model = JsonConvert.DeserializeObject<PurchaseModel>(ff);
+                var ids = model.ids;
+                var nums = model.nums;
+                //执行添加订单方法并获得自增Id
+                int pid = _ibll.PurchaseAdd(model);
+                //执行添加详细表
+                _ibll.OrderDeits(pid, ids,nums);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        //显示采购订单表
+        [Route("PurchaseShow")]
+        [HttpGet]
+        public List<PurchaseModel> PurchaseShow()
+        {
+            return _ibll.PurchaseShow();
+        }
+        //查看采购订单详情
+        [Route("OrderDeitShow")]
+        [HttpGet]
+        public List<OrderDeitModel> OrderDeitShow(int pid)
+        {
+            return _ibll.OrderDeitShow(pid);
+        }
     }
 }

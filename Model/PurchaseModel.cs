@@ -15,5 +15,8 @@ namespace Model
         public string   PurchaseCode  { get; set; }//订单编号
         public DateTime PurchaseTime  { get; set; }//订单时间  
         public int      PurchaseState { get; set; }//订单状态    --0未完成    1完成
+
+        public string ids { get; set; }
+        public string nums { get; set; }
     }
 }

@@ -29,5 +29,16 @@ namespace DAL.IDal
         int ReportShan(string ids);
         ReportModel ReportFan(int id);
         int ReportUpdate(ReportModel model);
+        //添加采购订单表
+        int PurchaseAdd(PurchaseModel model);
+        //添加订单详情表
+        bool OrderDeits(int pid, string ids, string nums);
+        //显示采购订单表
+        List<PurchaseModel> PurchaseShow();
+        //查看采购订单详情
+        List<OrderDeitModel> OrderDeitShow(int pid);
+
+
+
     }
 }

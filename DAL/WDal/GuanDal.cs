@@ -226,5 +226,50 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        //添加采购订单表
+        public int PurchaseAdd(PurchaseModel model) 
+        {
+            model.PurchaseState = 0;
+            model.PurchaseTime = DateTime.Now;
+            string sql = @$"insert into Purchase values('{model.PurchaseUid}','{model.PurchasePid}','{model.PurchaseCode}','{model.PurchaseTime}','{model.PurchaseState}');
+                           select @@IDENTITY";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return Convert.ToInt32(connection.ExecuteScalar(sql));
+            }
+        }
+        //添加采购表和详细
+        public bool OrderDeits(int pid,string ids,string nums) 
+        {
+            List<string> list = new List<string>();
+            //把ids分割为数值
+            var arr = ids.Split(',');
+            var arr2= nums.Split(',');
+            for (int i = 0; i < arr.Length; i++)
+            {
+                string sql = $"insert into OrderDeit values('{pid}','{arr[i]}','{arr2[i]}')";
+                list.Add(sql);
+            } 
+            return dBHelper.ExecuteSqlTran(list);
+        }
+        //显示采购订单表
+        public List<PurchaseModel> PurchaseShow() 
+        {
+            string sql = $"select * from Purchase";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<PurchaseModel>(sql).ToList();
+            }
+        }
+        //查看采购订单详情
+        public List<OrderDeitModel> OrderDeitShow(int pid)
+        {
+            string sql = $"select * from  Goods g join OrderDeit d on g.GoodsId=d.OGid join Purchase p on p.PurchaseId=d.OPid   where  d.OPid={pid}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<OrderDeitModel>(sql).ToList();
+            }
+        }
+
     }
 }

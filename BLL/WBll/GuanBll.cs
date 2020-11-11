@@ -115,5 +115,25 @@ namespace BLL
         {
             return _idal.ReportUpdate(model);
         }
+        //添加采购订单表
+        public int PurchaseAdd(PurchaseModel model)
+        {
+            return _idal.PurchaseAdd(model);
+        }
+        //添加采购表和详细
+        public bool OrderDeits(int pid, string ids, string nums)
+        {
+            return _idal.OrderDeits(pid, ids, nums);
+        }
+        //显示采购订单表
+        public List<PurchaseModel> PurchaseShow()
+        {
+            return _idal.PurchaseShow();
+        }
+        //查看采购订单详情
+        public List<OrderDeitModel> OrderDeitShow(int pid)
+        {
+            return _idal.OrderDeitShow(pid);
+        }
     }
 }
