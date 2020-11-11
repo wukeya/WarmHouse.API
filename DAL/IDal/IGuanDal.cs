@@ -37,8 +37,14 @@ namespace DAL.IDal
         int ReportUpdate(ReportModel model);
         #endregion
 
-        //调库 LocationWith (库位详细表) Location (库位表)
+        //采购
+        #region
 
+        #endregion
+        //调库 LocationWith (库位详细表) Location (库位表)
+        #region
+
+        #endregion
 
         //退货 Returnd
         #region
@@ -48,8 +54,12 @@ namespace DAL.IDal
         ReturndModel ReturndFan(int id);
         int ReturndUpdate(ReturndModel model);
         #endregion
-        //仓库 WareHouse
 
+        //仓库 WareHouse
+        //
+        #region
+
+        #endregion
 
     }
 
