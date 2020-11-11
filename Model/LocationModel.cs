@@ -12,7 +12,7 @@ namespace Model
         public int    LocationId   { get; set; }//库位Id
         public int    LocationWid  { get; set; }//仓库Id
         public string LocationName { get; set; }//库位名称
-        public float  LocationMin  { get; set; }//
-        public float  LocationMax  { get; set; }//
+        public float  LocationMin  { get; set; }//库位最小值
+        public float  LocationMax  { get; set; }//库位最大值
     }
 }

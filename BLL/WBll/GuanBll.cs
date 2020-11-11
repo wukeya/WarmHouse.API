@@ -135,5 +135,36 @@ namespace BLL
         {
             return _idal.OrderDeitShow(pid);
         }
+
+        //添加库位
+        public int LocationAdd(LocationModel model)
+        {
+            return _idal.LocationAdd(model);
+        }
+        //显示库位
+        public List<LocationModel> LocationShow(int wid)
+        {
+            return _idal.LocationShow(wid);
+        }
+        //添加库位详
+        public int LocationWithAdd(LocationWithModel model)
+        {
+            return _idal.LocationWithAdd(model);
+        }
+        //显示仓库
+        public List<WareHouseModel> WareHouseShow()
+        {
+            return _idal.WareHouseShow();
+        }
+        //显示库位详情
+        public List<LocationWithModel> LocationWithShow()
+        {
+            return _idal.LocationWithShow();
+        }
+        //判断是否入库
+        public int IsRuKu(int oid)
+        {
+            return _idal.IsRuKu(oid);
+        }
     }
 }

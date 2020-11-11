@@ -10,8 +10,9 @@ namespace Model
     public class LocationWithModel
     {
         public int LocationWithId  { get; set; }//库位详细Id
-        public int LocationWithPid { get; set; }//库位订单Id
-        public int LocationWithGid { get; set; }//库位商品Id
-        public int LocationWithNum { get; set; }//库位商品数量
+        public int LocationWid { get; set; }//仓库Id
+        public int LocationLid { get; set; }//库位Id
+        public int LocationWithOid { get; set; }//订单详细Id
+        public int LocationState { get; set; }
     }
 }

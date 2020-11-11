@@ -37,7 +37,18 @@ namespace DAL.IDal
         List<PurchaseModel> PurchaseShow();
         //查看采购订单详情
         List<OrderDeitModel> OrderDeitShow(int pid);
-
+        //显示仓库
+        List<WareHouseModel> WareHouseShow();
+        //添加库位
+        int LocationAdd(LocationModel model);
+        //显示库位
+        List<LocationModel> LocationShow(int wid);
+        //添加库位详
+        int LocationWithAdd(LocationWithModel model);
+        //显示库位详情
+        List<LocationWithModel> LocationWithShow();
+        //判断是否入库
+        int IsRuKu(int oid)；
 
 
     }
