@@ -22,6 +22,9 @@ namespace DAL
         public  string conStr { get {return _configuration.GetConnectionString("a"); } set { } }
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
+
+        //商品
+        #region
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {
@@ -119,6 +122,9 @@ namespace DAL
                 return connection.Query<SuppleModel>(sql).ToList();
             }
         }
+        #endregion
+        //设备
+        #region
         //添加设备
         public int EquipmentAdd(EquipmentModel model) 
         {
@@ -173,6 +179,10 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        #endregion
+
+        //报损
+        #region
         //添加报损
         public int ReportAdd(ReportModel model) 
         {
@@ -226,6 +236,9 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        #endregion
+        //采购
+        #region
         //添加采购订单表
         public int PurchaseAdd(PurchaseModel model) 
         {
@@ -270,6 +283,34 @@ namespace DAL
                 return connection.Query<OrderDeitModel>(sql).ToList();
             }
         }
+        #endregion
 
+        //
+        #region
+        public int ReturndAdd(ReturndModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ReturndShan(string ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ReturndModel ReturndFan(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int ReturndUpdate(ReturndModel model)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
