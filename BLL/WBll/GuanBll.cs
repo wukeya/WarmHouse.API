@@ -15,8 +15,6 @@ namespace BLL
         {
             _idal = dal;
         }
-        //商品
-        #region
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {
@@ -27,22 +25,31 @@ namespace BLL
         {
             return _idal.GoodsShan(ids);
         }
+
         //反填商品
         public GoodsModel GoodsFan(int id)
         {
             return _idal.GoodsFan(id);
         }
+
         //修改商品
 
         public int GoodsUpdate(GoodsModel model)
         {
             return _idal.GoodsUpdate(model);
         }
+
         //显示商品
         public List<GoodsModel> GooodsShow(int pagIndex, int pagSize, int typeId, string name, out int pagCount)
         {
             return _idal.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
         }
+        //修改商品状态
+        public int GoodsUpdateState(int state, int id) 
+        {
+            return _idal.GoodsUpdateState(state, id);
+        }
+
         //绑定单位
         public List<UnitModel> UnitBang()
         {
@@ -58,9 +65,6 @@ namespace BLL
         {
             return _idal.SuppleBang();
         }
-        #endregion
-        //设备
-        #region
         //添加设备
         public int EquipmentAdd(EquipmentModel model)
         {
@@ -86,9 +90,6 @@ namespace BLL
         {
             return _idal.EquipmentUpdate(model);
         }
-        #endregion
-        //报损
-        #region
         //添加报损
         public int ReportAdd(ReportModel model)
         {
@@ -114,34 +115,25 @@ namespace BLL
         {
             return _idal.ReportUpdate(model);
         }
-        #endregion
-        //退货
-        #region
-        //添加退货信息
-        public int ReturndAdd(ReturndModel model)
+        //添加采购订单表
+        public int PurchaseAdd(PurchaseModel model)
         {
-            return _idal.ReturndAdd(model);
+            return _idal.PurchaseAdd(model);
         }
-        //显示退货
-        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
+        //添加采购表和详细
+        public bool OrderDeits(int pid, string ids, string nums)
         {
-            return _idal.ReturndShow(ReturnId, ReturnGid, ReturnPid, RetrunNum,out pagCount);
+            return _idal.OrderDeits(pid, ids, nums);
         }
-        //删除退货
-        public int ReturndShan(string ids)
+        //显示采购订单表
+        public List<PurchaseModel> PurchaseShow()
         {
-            return _idal.ReportShan(ids);
+            return _idal.PurchaseShow();
         }
-        //退货反填Returnd
-        public ReturndModel ReturndFan(int id)
+        //查看采购订单详情
+        public List<OrderDeitModel> OrderDeitShow(int pid)
         {
-            return _idal.ReturndFan(id);
+            return _idal.OrderDeitShow(pid);
         }
-        //修改退货
-        public int ReturndUpdate(ReturndModel model)
-        {
-            return _idal.ReturndUpdate(model);
-        }
-        #endregion
     }
 }

@@ -9,6 +9,7 @@ using BLL;
 using BLL.IBll;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace UI.API.Controllers
 {
@@ -19,12 +20,11 @@ namespace UI.API.Controllers
         public IWebHostEnvironment _iwebh;
         //依赖注入
         private IGuanBLL _ibll;
-        public GuanController(IGuanBLL ibll)
+        public GuanController(IGuanBLL ibll,IWebHostEnvironment iwebh)
         {
             _ibll = ibll;
+            _iwebh = iwebh;
         }
-        //商品
-        #region
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]
@@ -35,8 +35,10 @@ namespace UI.API.Controllers
         [Route("GoodsAdd")]
         [HttpPost]
         //添加商品
-        public int GoodsAdd(GoodsModel model)
+        public int GoodsAdd(string ff="")
         {
+            GoodsModel model= JsonConvert.DeserializeObject<GoodsModel>(ff);
+            model.GoodsState = 1;
             var file = Request.Form.Files;
             foreach (var item in file)
             {
@@ -72,15 +74,30 @@ namespace UI.API.Controllers
         //修改商品
         [Route("GoodsUpdate")]
         [HttpPost]
-        public int GoodsUpdate(GoodsModel model)
+        public int GoodsUpdate(string ff="")
         {
+            GoodsModel model = JsonConvert.DeserializeObject<GoodsModel>(ff);
+            var file = Request.Form.Files;
+            foreach (var item in file)
+            {
+                if (item.Length > 0)
+                {
+                    var wort = _iwebh.ContentRootPath;
+                    var filename = Path.Combine(wort, "wwwroot/img/", item.FileName);
+                    model.GoodsImg = "/img/" + item.FileName;
+                    using (var s = new FileStream(filename, FileMode.Create))
+                    {
+                        item.CopyTo(s);
+                    }
+                }
+            }
             return _ibll.GoodsUpdate(model);
         }
 
         //显示商品
         [Route("GoodsShow")]
         [HttpGet]
-        public IActionResult GooodsShow(int pagIndex=1, int pagSize=3, int typeId=0, string name="")
+        public  IActionResult GooodsShow(int pagIndex=1, int pagSize=3, int typeId=0, string name="")
         {
             if (name==null)
             {
@@ -90,7 +107,14 @@ namespace UI.API.Controllers
             List<GoodsModel> list= _ibll.GooodsShow(pagIndex, pagSize, typeId, name, out pagCount);
             return Ok(new { a = list, pagCount = pagCount });
         }
-       
+        //修改商品状态
+        [Route("GoodsUpdateState")]
+        [HttpGet]
+        public int GoodsUpdateState(int state, int id)
+        {
+            return _ibll.GoodsUpdateState(state, id);
+        }
+
         //绑定类型
         [Route("TypeBang")]
         [HttpGet]
@@ -105,10 +129,6 @@ namespace UI.API.Controllers
         {
             return _ibll.SuppleBang();
         }
-        #endregion
-
-        //设备
-        #region
         [Route("EquipmentAdd")]
         [HttpPost]
         //添加设备
@@ -119,7 +139,7 @@ namespace UI.API.Controllers
         //显示设备
         [Route("EquipmentShow")]
         [HttpGet]
-        public List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
+        public  List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
         {
             int pagCount = 0;
             return _ibll.EquipmentShow(pagIndex, pagSize, name, out pagCount);
@@ -145,10 +165,6 @@ namespace UI.API.Controllers
         {
             return _ibll.EquipmentUpdate(model);
         }
-        #endregion
-
-        //报损
-        #region
         //添加报损
         [Route("ReportAdd")]
         [HttpPost]
@@ -184,60 +200,42 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
-        #endregion
-
-        //退货
-        #region
-        //添加退货
-        [Route("ReturndAdd")]
+        //添加订单和详情表
+        [Route("OrderDeitAllAdd")]
         [HttpPost]
-        public int ReturndAdd(ReturndModel model)
+        public int OrderDeitAllAdd(string ff = "")
         {
-            return _ibll.ReturndAdd(model);
+            try
+            {
+                //把字符串序列化为集合
+                PurchaseModel model = JsonConvert.DeserializeObject<PurchaseModel>(ff);
+                var ids = model.ids;
+                var nums = model.nums;
+                //执行添加订单方法并获得自增Id
+                int pid = _ibll.PurchaseAdd(model);
+                //执行添加详细表
+                _ibll.OrderDeits(pid, ids,nums);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
-        //显示退货
-        [Route("ReportShow")]
+        //显示采购订单表
+        [Route("PurchaseShow")]
         [HttpGet]
-        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
+        public List<PurchaseModel> PurchaseShow()
         {
-            return _ibll.ReturndShow(ReturnId, ReturnGid, ReturnPid, RetrunNum, out pagCount);
+            return _ibll.PurchaseShow();
         }
-        //删除退货
-        [Route("ReturndShan")]
+        //查看采购订单详情
+        [Route("OrderDeitShow")]
         [HttpGet]
-        public int ReturndShan(string ids)
+        public List<OrderDeitModel> OrderDeitShow(int pid)
         {
-            return _ibll.ReturndShan(ids);
+            return _ibll.OrderDeitShow(pid);
         }
-        //反填退货
-        [Route("ReturndFan")]
-        [HttpGet]
-        public ReturndModel ReturndFan(int id)
-        {
-            return _ibll.ReturndFan(id);
-        }
-        //修改退货
-        [Route("ReturndUpdate")]
-        [HttpPost]
-        public int ReturndUpdate(ReturndModel model)
-        {
-            return _ibll.ReturndUpdate(model);
-        }
-        #endregion
-
-        //
-        #region
-
-        #endregion
-
-        //
-        #region
-
-        #endregion
-
-        //
-        #region
-
-        #endregion
     }
 }
