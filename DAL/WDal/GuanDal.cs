@@ -255,7 +255,7 @@ namespace DAL
             var arr2= nums.Split(',');
             for (int i = 0; i < arr.Length; i++)
             {
-                string sql = $"insert into OrderDeit values('{pid}','{arr[i]}','{arr2[i]}')";
+                string sql = $"insert into OrderDeit values('{pid}','{arr[i]}','{arr2[i]}',0)";
                 list.Add(sql);
             } 
             return dBHelper.ExecuteSqlTran(list);
@@ -278,6 +278,15 @@ namespace DAL
                 return connection.Query<OrderDeitModel>(sql).ToList();
             }
         }
+        //修改采购订单详情State
+        public int OrderUpdateState(int state, int oid) 
+        {
+            string sql = $"update OrderDeit set OState={state}  where OrderId={oid} ";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
 
         #endregion
         //退货
@@ -285,29 +294,21 @@ namespace DAL
         //添加退货信息
         public int ReturndAdd(ReturndModel model)
         {
-            string sql = $"insert into Returnd values('{model.ReturnGid}','{model.ReturnPid}','{model.RetrunNum}')";
+            string sql = $"insert into Returnd values('{model.ReturnOid}','{model.ReturnPid}','{model.ReturnState}')";
             using (SqlConnection connection = new SqlConnection(conStr))
             {
                 return connection.Execute(sql);
             }
         }
         //显示退货
-        public List<ReturndModel> ReturndShow(int returnId, int returnGid, int returnPid, int retrunNum, out int ragCount)
+        public List<ReturndModel> ReturndShow() 
         {
-            ragCount = 0;
-            string sql = "ReturndPag";
-            //实例化一个字典
-            Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("@returnId", returnId);
-            pairs.Add("@returnGid", returnGid);
-            pairs.Add("@returnPid", returnPid);
-            pairs.Add("@retrunNum", retrunNum);
-            pairs.Add("@ragCount", ragCount);
-            //调用储存过程
-            DataTable tb = dBHelper.GetProc(sql, pairs, out ragCount);
-            //吧DataTable转化为list
-            List<ReturndModel> list = dBHelper.DataTableToList<ReturndModel>(tb);
-            return list;
+            string sql = $"select * from Returnd  r join Purchase p on p.PurchaseId=r.ReturnPid join  OrderDeit o on o.OrderId=r.ReturnOid join Goods g on g.GoodsId=o.OGid ";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<ReturndModel> list = connection.Query<ReturndModel>(sql).ToList();
+                return list;
+            }
         }
         //删除退货
         public int ReturndShan(string ids)
@@ -318,24 +319,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        //退货反填
-        public ReturndModel ReturndFan(int id)
-        {
-            string sql = $"select * from Returnd where ReturnId={id}";
-            using (SqlConnection connection = new SqlConnection(conStr))
-            {
-                return connection.Query<ReturndModel>(sql).ToList().FirstOrDefault();
-            }
-        }
-        //修改退货
-        public int ReturndUpdate(ReturndModel model)
-        {
-            string sql = $"update Returnd set ReturnGid='{model.ReturnGid}',ReturnPid='{model.ReturnPid}',RetrunNum='{model.RetrunNum}' where ReturnId='{model.ReturnId}'";
-            using (SqlConnection connection = new SqlConnection(conStr))
-            {
-                return connection.Execute(sql);
-            }
-        }
+     
         #endregion
         //库位
         #region
@@ -385,7 +369,7 @@ namespace DAL
             }
         }
         //判断是否入库
-        public int IsRuKu(int oid)
+        public int IsRuKu(int oid=0)
         {
             string sql = $"select count(1) from LocationWith where LocationWithOid={oid}";
             using (SqlConnection connection=new SqlConnection(conStr))

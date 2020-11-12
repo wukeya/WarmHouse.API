@@ -10,6 +10,7 @@ using BLL.IBll;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics.Contracts;
 
 namespace UI.API.Controllers
 {
@@ -258,6 +259,9 @@ namespace UI.API.Controllers
         {
             LocationWithModel model = JsonConvert.DeserializeObject<LocationWithModel>(ff);
             model.LocationState = 0;
+            //修改订单详情状态
+            int state = 1;
+            _ibll.OrderUpdateState(state, model.LocationWithOid);
             return _ibll.LocationWithAdd(model);
         }
         //显示仓库
@@ -280,6 +284,31 @@ namespace UI.API.Controllers
         public int IsRuKu(int oid)
         {
             return _ibll.IsRuKu(oid);
+        }
+        //添加退货信息
+        [Route("ReturndAdd")]
+        [HttpPost]
+        public int ReturndAdd(string ff="")
+        {
+            ReturndModel model = JsonConvert.DeserializeObject<ReturndModel>(ff);
+            int state = 2;
+            //修改订单详细状态
+            _ibll.OrderUpdateState(state, model.ReturnOid);
+            return _ibll.ReturndAdd(model);
+        }
+        //显示退货信息
+        [Route("ReturndShow")]
+        [HttpGet]
+        public List<ReturndModel> ReturndShow()
+        {
+            return _ibll.ReturndShow();
+        }
+        //删除退货信息
+        [Route("ReturndShan")]
+        [HttpGet]
+        public int ReturndShan(string ids)
+        {
+            return _ibll.ReturndShan(ids);
         }
     }
 }

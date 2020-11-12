@@ -135,7 +135,11 @@ namespace BLL
         {
             return _idal.OrderDeitShow(pid);
         }
-
+        //修改采购订单详情State
+        public int OrderUpdateState(int state, int oid)
+        {
+            return _idal.OrderUpdateState(state, oid);
+        }
         //添加库位
         public int LocationAdd(LocationModel model)
         {
@@ -166,5 +170,22 @@ namespace BLL
         {
             return _idal.IsRuKu(oid);
         }
+        //添加退货信息
+        public  int ReturndAdd(ReturndModel model) 
+        {
+            return _idal.ReturndAdd(model);
+        }
+        //显示退货信息
+        public List<ReturndModel> ReturndShow()
+        {
+            return _idal.ReturndShow();
+        }
+        //删除退货信息
+        public int ReturndShan(string ids) 
+        {
+            return _idal.ReturndShan(ids);
+        }
+      
+       
     }
 }

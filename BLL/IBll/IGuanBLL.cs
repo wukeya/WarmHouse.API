@@ -36,6 +36,8 @@ namespace BLL.IBll
         List<PurchaseModel> PurchaseShow();
         //查看采购订单详情
         List<OrderDeitModel> OrderDeitShow(int pid);
+        //修改采购订单详情State
+        int OrderUpdateState(int state, int oid);
         //显示仓库
         List<WareHouseModel> WareHouseShow();
         //添加库位
@@ -48,5 +50,10 @@ namespace BLL.IBll
         List<LocationWithModel> LocationWithShow();
         //判断是否入库
         int IsRuKu(int oid);
+        //退货
+        int ReturndAdd(ReturndModel model);
+        List<ReturndModel> ReturndShow();
+        int ReturndShan(string ids);
+       
     }
 }
