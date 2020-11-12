@@ -14,6 +14,7 @@ namespace Model
         public int OPid    { get; set; }
         public int OGid    { get; set; }
         public int ONum { get; set; }
+        public int OState { get; set; }
         //采购表
         public int PurchaseId { get; set; }//采购id
         public int PurchaseUid { get; set; }//用户id

@@ -25,7 +25,7 @@ namespace DAL
 
         //商品
         #region
-        //添加商品
+        //添加商品,
         public int GoodsAdd(GoodsModel model)
         {
             string sql = $"insert into Goods values('{model.GoodsName}','{model.GoodsTid}','{model.GoodsSid}','{model.GoodsImg}','{model.GoodsCode}','{model.GoodsUid}','{model.GoodsNum}','{model.GoodsMoney}','{model.GoodsSize}','{model.GoodsPeople}','{model.GoodsState}')";
@@ -43,7 +43,6 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        
         //反填商品
         public GoodsModel GoodsFan(int id)
         {
@@ -53,9 +52,7 @@ namespace DAL
                 return connection.Query<GoodsModel>(sql).ToList().FirstOrDefault();
             }
         }
-
        //修改商品
-
         public int GoodsUpdate(GoodsModel model)
         {
             string sql = $"update Goods set GoodsName='{model.GoodsName}',GoodsTid='{model.GoodsTid}',GoodsSid='{model.GoodsSid}',GoodsImg='{model.GoodsImg}',GoodsCode='{model.GoodsCode}',GoodsUid='{model.GoodsUid}',GoodsNum='{model.GoodsNum}',GoodsMoney='{model.GoodsMoney}',GoodsSize='{model.GoodsSid}',GoodsPeople='{model.GoodsPeople}',GoodsState='{model.GoodsState}' where GoodsId={model.GoodsId}";
@@ -64,7 +61,6 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-
         //显示商品
         public List<GoodsModel> GooodsShow(int pagIndex,int pagSize,int typeId,string name,out int pagCount)
         {
@@ -85,6 +81,7 @@ namespace DAL
             List<GoodsModel> list = dBHelper.DataTableToList<GoodsModel>(tb);
             return list;
         }
+
         //修改商品状态
         public int GoodsUpdateState(int state, int id) 
         {
@@ -94,6 +91,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+
 
         //绑定单位
         public List<UnitModel> UnitBang()
@@ -180,7 +178,6 @@ namespace DAL
             }
         }
         #endregion
-
         //报损
         #region
         //添加报损
@@ -218,7 +215,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        //反弹报损
+        //反填报损
         public ReportModel ReportFan(int id) 
         {
             string sql = $"select * from Reported where ReportedId={id}";
@@ -236,9 +233,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        #endregion
-        //采购
-        #region
+
         //添加采购订单表
         public int PurchaseAdd(PurchaseModel model) 
         {
@@ -260,7 +255,7 @@ namespace DAL
             var arr2= nums.Split(',');
             for (int i = 0; i < arr.Length; i++)
             {
-                string sql = $"insert into OrderDeit values('{pid}','{arr[i]}','{arr2[i]}')";
+                string sql = $"insert into OrderDeit values('{pid}','{arr[i]}','{arr2[i]}',0)";
                 list.Add(sql);
             } 
             return dBHelper.ExecuteSqlTran(list);
@@ -277,14 +272,111 @@ namespace DAL
         //查看采购订单详情
         public List<OrderDeitModel> OrderDeitShow(int pid)
         {
-            string sql = $"select * from  Goods g join OrderDeit d on g.GoodsId=d.OGid join Purchase p on p.PurchaseId=d.OPid   where  d.OPid={pid}";
+            string sql = $"select * from  Goods g join OrderDeit d on g.GoodsId=d.OGid join Purchase p on p.PurchaseId=d.OPid join Units u on u.UnitId=g.GoodsUid join Typed  t on t.TypedId=g.GoodsTid    where  d.OPid={pid}";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Query<OrderDeitModel>(sql).ToList();
             }
         }
-        #endregion
+        //修改采购订单详情State
+        public int OrderUpdateState(int state, int oid) 
+        {
+            string sql = $"update OrderDeit set OState={state}  where OrderId={oid} ";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
 
-        
+        #endregion
+        //退货
+        #region
+        //添加退货信息
+        public int ReturndAdd(ReturndModel model)
+        {
+            string sql = $"insert into Returnd values('{model.ReturnOid}','{model.ReturnPid}','{model.ReturnState}')";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示退货
+        public List<ReturndModel> ReturndShow() 
+        {
+            string sql = $"select * from Returnd  r join Purchase p on p.PurchaseId=r.ReturnPid join  OrderDeit o on o.OrderId=r.ReturnOid join Goods g on g.GoodsId=o.OGid ";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<ReturndModel> list = connection.Query<ReturndModel>(sql).ToList();
+                return list;
+            }
+        }
+        //删除退货
+        public int ReturndShan(string ids)
+        {
+            string sql = $"delete from Returnd where ReturnId like ({ids})";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+     
+        #endregion
+        //库位
+        #region
+        //添加库位
+        public int LocationAdd(LocationModel model) 
+        {
+            string sql = $"insert into Location values('{model.LocationWid}','{model.LocationName}','{model.LocationMin}','{model.LocationMax}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示库位
+       public  List<LocationModel> LocationShow(int wid)
+        {
+            string sql = $"select  * from Location where LocationWid={wid}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<LocationModel>(sql).ToList();
+            }
+        }
+        //添加库位详
+        public int LocationWithAdd(LocationWithModel model) 
+        {
+            string sql = $"insert into LocationWith values('{model.LocationWid}','{model.LocationLid}','{model.LocationWithOid}','{model.LocationState}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示仓库
+        public List<WareHouseModel> WareHouseShow()
+        {
+            string sql = $"select * from WareHouse";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<WareHouseModel>(sql).ToList();
+            }
+        }
+        //显示库位详情
+        public List<LocationWithModel> LocationWithShow() 
+        {
+            string sql = $"select * from LocationWith";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<LocationWithModel>(sql).ToList(); 
+            }
+        }
+        //判断是否入库
+        public int IsRuKu(int oid=0)
+        {
+            string sql = $"select count(1) from LocationWith where LocationWithOid={oid}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return Convert.ToInt32(connection.ExecuteScalar(sql));
+            }
+        }
     }
 }
+#endregion

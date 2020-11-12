@@ -135,5 +135,57 @@ namespace BLL
         {
             return _idal.OrderDeitShow(pid);
         }
+        //修改采购订单详情State
+        public int OrderUpdateState(int state, int oid)
+        {
+            return _idal.OrderUpdateState(state, oid);
+        }
+        //添加库位
+        public int LocationAdd(LocationModel model)
+        {
+            return _idal.LocationAdd(model);
+        }
+        //显示库位
+        public List<LocationModel> LocationShow(int wid)
+        {
+            return _idal.LocationShow(wid);
+        }
+        //添加库位详
+        public int LocationWithAdd(LocationWithModel model)
+        {
+            return _idal.LocationWithAdd(model);
+        }
+        //显示仓库
+        public List<WareHouseModel> WareHouseShow()
+        {
+            return _idal.WareHouseShow();
+        }
+        //显示库位详情
+        public List<LocationWithModel> LocationWithShow()
+        {
+            return _idal.LocationWithShow();
+        }
+        //判断是否入库
+        public int IsRuKu(int oid)
+        {
+            return _idal.IsRuKu(oid);
+        }
+        //添加退货信息
+        public  int ReturndAdd(ReturndModel model) 
+        {
+            return _idal.ReturndAdd(model);
+        }
+        //显示退货信息
+        public List<ReturndModel> ReturndShow()
+        {
+            return _idal.ReturndShow();
+        }
+        //删除退货信息
+        public int ReturndShan(string ids) 
+        {
+            return _idal.ReturndShan(ids);
+        }
+      
+       
     }
 }

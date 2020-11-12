@@ -10,6 +10,7 @@ using BLL.IBll;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics.Contracts;
 
 namespace UI.API.Controllers
 {
@@ -236,6 +237,78 @@ namespace UI.API.Controllers
         public List<OrderDeitModel> OrderDeitShow(int pid)
         {
             return _ibll.OrderDeitShow(pid);
+        }
+        //添加库位
+        [Route("LocationAdd")]
+        [HttpPost]
+        public int LocationAdd(LocationModel model)
+        {
+            return _ibll.LocationAdd(model);
+        }
+        //显示库位
+        [Route("LocationShow")]
+        [HttpGet]
+        public List<LocationModel> LocationShow(int wid)
+        {
+            return _ibll.LocationShow(wid);
+        }
+        //添加库位详
+        [Route("LocationWithAdd")]
+        [HttpPost]
+        public int LocationWithAdd(string ff="")
+        {
+            LocationWithModel model = JsonConvert.DeserializeObject<LocationWithModel>(ff);
+            model.LocationState = 0;
+            //修改订单详情状态
+            int state = 1;
+            _ibll.OrderUpdateState(state, model.LocationWithOid);
+            return _ibll.LocationWithAdd(model);
+        }
+        //显示仓库
+        [Route("WareHouseShow")]
+        [HttpGet]
+        public List<WareHouseModel> WareHouseShow()
+        {
+            return _ibll.WareHouseShow();
+        }
+        //显示库位详情
+        [Route("LocationWithShow")]
+        [HttpGet]
+        public List<LocationWithModel> LocationWithShow()
+        {
+            return _ibll.LocationWithShow();
+        }
+        //判断是否入库
+        [Route("IsRuku")]
+        [HttpGet]
+        public int IsRuKu(int oid)
+        {
+            return _ibll.IsRuKu(oid);
+        }
+        //添加退货信息
+        [Route("ReturndAdd")]
+        [HttpPost]
+        public int ReturndAdd(string ff="")
+        {
+            ReturndModel model = JsonConvert.DeserializeObject<ReturndModel>(ff);
+            int state = 2;
+            //修改订单详细状态
+            _ibll.OrderUpdateState(state, model.ReturnOid);
+            return _ibll.ReturndAdd(model);
+        }
+        //显示退货信息
+        [Route("ReturndShow")]
+        [HttpGet]
+        public List<ReturndModel> ReturndShow()
+        {
+            return _ibll.ReturndShow();
+        }
+        //删除退货信息
+        [Route("ReturndShan")]
+        [HttpGet]
+        public int ReturndShan(string ids)
+        {
+            return _ibll.ReturndShan(ids);
         }
     }
 }
