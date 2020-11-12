@@ -25,7 +25,7 @@ namespace DAL
 
         //商品
         #region
-        //添加商品,
+        //添加商品
         public int GoodsAdd(GoodsModel model)
         {
             string sql = $"insert into Goods values('{model.GoodsName}','{model.GoodsTid}','{model.GoodsSid}','{model.GoodsImg}','{model.GoodsCode}','{model.GoodsUid}','{model.GoodsNum}','{model.GoodsMoney}','{model.GoodsSize}','{model.GoodsPeople}','{model.GoodsState}')";
