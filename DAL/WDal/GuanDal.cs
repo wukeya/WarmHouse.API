@@ -285,32 +285,6 @@ namespace DAL
         }
         #endregion
 
-        //
-        #region
-        public int ReturndAdd(ReturndModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<ReturndModel> ReturndShow(int ReturnId, int ReturnGid, int ReturnPid, int RetrunNum, out int pagCount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int ReturndShan(string ids)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ReturndModel ReturndFan(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int ReturndUpdate(ReturndModel model)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
+        
     }
 }
