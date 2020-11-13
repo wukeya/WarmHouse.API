@@ -12,8 +12,9 @@ namespace DAL
 {
     public class GuanDal:IGuanDal
     {
-        
+
         public static IConfiguration _configuration;
+        
         public GuanDal(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -22,6 +23,24 @@ namespace DAL
         public  string conStr { get {return _configuration.GetConnectionString("a"); } set { } }
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
+
+        //用户 Userd 登录 注册
+        #region
+        public UserdModel UserdDenLuint(string username,string userpass)
+        {
+            string sql = $"select count(1) from Userd where UserName='{username}'and UserPass='{userpass}'";
+
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Query<UserdModel>(sql).ToList().FirstOrDefault();
+            }
+        }
+        //注册
+        public int UserdZhuChe(UserdModel model)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         //商品
         #region
@@ -43,7 +62,7 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
-        //反填商品
+        //反填商品d
         public GoodsModel GoodsFan(int id)
         {
             string sql = $"select  * from Goods g join Units u on g.GoodsUid=u.UnitId  join Typed t on g.GoodsTid=t.TypedId join Supple s on s.SuppleId=g.GoodsSid where GoodsId={id}";
@@ -436,6 +455,8 @@ namespace DAL
                 return Convert.ToInt32(connection.ExecuteScalar(sql));
             }
         }
+
+        
     }
 }
 #endregion
