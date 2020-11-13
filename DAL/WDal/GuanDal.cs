@@ -344,12 +344,79 @@ namespace DAL
         //添加库位详
         public int LocationWithAdd(LocationWithModel model) 
         {
-            string sql = $"insert into LocationWith values('{model.LocationWid}','{model.LocationLid}','{model.LocationWithOid}','{model.LocationState}')";
+            string sql = $"insert into LocationWith values('{model.LocationRuCode}','{model.LocationWid}','{model.LocationLid}','{model.LocationWithOid}','{model.LocationState}')";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Execute(sql);
             }
         }
+        //添加入库清单表
+        public int RuChecklistAdd(RuchecklistModel model) 
+        {
+            string sql = $"insert into Ruchecklist values('{model.RuchecklistCode}','{model.RuchecklistTime}','{model.RuchecklistPeople}',{model.RucheckState});";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //添加临时库位详
+        public int TempLocationWithAdd(LocationWithModel model)
+        {
+            string sql = $"insert into TempLocationWith values('{model.LocationWid}','{model.LocationLid}','{model.LocationWithOid}','{model.LocationState}')";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //查看临时库位详情
+        public List<TempLocationWithModel> TempLocationWithShow() 
+        {
+            string sql = $"select * from TempLocationWith";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<TempLocationWithModel>(sql).ToList();
+            }
+        }
+        //清空临时库位详情
+        public int TempLocationWithDelete() 
+        {
+            string sql = $"delete from TempLocationWith";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //查看入库清单
+        public List<RuchecklistModel> RuchecklistShow() 
+        {
+            string sql = "select *from  Ruchecklist";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<RuchecklistModel>(sql).ToList();
+
+            }
+        }
+        //通过Id查看编号
+        public string SearchCode(int id)
+        {
+            string sql = $"select RuchecklistCode from  Ruchecklist where RuchecklistId={id}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.ExecuteScalar(sql).ToString();
+            }
+
+        }
+        //查看入库清单详细
+        public List<LocationWithModel> LocationWithShow(string code) 
+        {
+            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid where LocationRuCode='{code}'";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
+                return list;
+            }
+        }
+ 
         //显示仓库
         public List<WareHouseModel> WareHouseShow()
         {
@@ -359,15 +426,7 @@ namespace DAL
                 return connection.Query<WareHouseModel>(sql).ToList();
             }
         }
-        //显示库位详情
-        public List<LocationWithModel> LocationWithShow() 
-        {
-            string sql = $"select * from LocationWith";
-            using (SqlConnection connection=new SqlConnection(conStr))
-            {
-                return connection.Query<LocationWithModel>(sql).ToList(); 
-            }
-        }
+     
         //判断是否入库
         public int IsRuKu(int oid=0)
         {

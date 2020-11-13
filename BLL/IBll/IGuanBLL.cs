@@ -36,6 +36,10 @@ namespace BLL.IBll
         List<PurchaseModel> PurchaseShow();
         //查看采购订单详情
         List<OrderDeitModel> OrderDeitShow(int pid);
+        //添加入库清单
+        int RuChecklistAdd(RuchecklistModel model);
+        //添加库位详情临时
+        public int TempLocationWithAdd(LocationWithModel model);
         //修改采购订单详情State
         int OrderUpdateState(int state, int oid);
         //显示仓库
@@ -46,8 +50,17 @@ namespace BLL.IBll
         List<LocationModel> LocationShow(int wid);
         //添加库位详
         int LocationWithAdd(LocationWithModel model);
-        //显示库位详情
-        List<LocationWithModel> LocationWithShow();
+        
+        //查看临时库位详情表
+        List<TempLocationWithModel> TempLocationWithShow();
+        //清空临时表
+        int TempLocationWithDelete();
+        //查看入库清单表
+        List<RuchecklistModel> RuchecklistShow();
+        //通过ID找Code
+        string SearchCode(int id);
+        //显示库位详细
+        List<LocationWithModel> LocationWithShow(string code);
         //判断是否入库
         int IsRuKu(int oid);
         //退货

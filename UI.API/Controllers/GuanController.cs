@@ -252,17 +252,54 @@ namespace UI.API.Controllers
         {
             return _ibll.LocationShow(wid);
         }
-        //添加库位详
-        [Route("LocationWithAdd")]
+
+        //添加入库清单表
+        [Route("RuchecklistAdd")]
         [HttpPost]
-        public int LocationWithAdd(string ff="")
+        //添加入库清单表
+        public int RuChecklistAdd(string ff="")
+        {
+            try
+            {
+                RuchecklistModel model = JsonConvert.DeserializeObject<RuchecklistModel>(ff);
+                _ibll.RuChecklistAdd(model);
+                //查看临时库位详情
+                List<TempLocationWithModel> list = _ibll.TempLocationWithShow();
+                //循环把临时表数据加入库位详情表
+                foreach (var item in list)
+                {
+                    //实例化库位详情类
+                    LocationWithModel model1 = new LocationWithModel();
+                    model1.LocationRuCode = model.RuchecklistCode;
+                    model1.LocationState = item.LocationState;
+                    model1.LocationLid = item.LocationLid;
+                    model1.LocationWid = item.LocationWid;
+                    model1.LocationWithOid = item.LocationWithOid;
+                    //添加入库详细表
+                    _ibll.LocationWithAdd(model1);
+                    //清空临时详细表
+                    _ibll.TempLocationWithDelete();
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
+        //添加临时库位详
+        [Route("TempLocationWithAdd")]
+        [HttpPost]
+        public int TempLocationWithAdd(string ff="")
         {
             LocationWithModel model = JsonConvert.DeserializeObject<LocationWithModel>(ff);
             model.LocationState = 0;
             //修改订单详情状态
             int state = 1;
             _ibll.OrderUpdateState(state, model.LocationWithOid);
-            return _ibll.LocationWithAdd(model);
+            return _ibll.TempLocationWithAdd(model);
         }
         //显示仓库
         [Route("WareHouseShow")]
@@ -271,12 +308,28 @@ namespace UI.API.Controllers
         {
             return _ibll.WareHouseShow();
         }
-        //显示库位详情
+      
+        //查看入库清单
+        [Route("RuchecklistShow")]
+        [HttpGet]
+        public List<RuchecklistModel> RuchecklistShow()
+        {
+            return _ibll.RuchecklistShow();
+        }
+        //通过Id查看编号
+        [Route("SearchCode")]
+        [HttpGet]
+        public string SearchCode(int id)
+        {
+            return _ibll.SearchCode(id);
+
+        }
+        //查看入库清单详细
         [Route("LocationWithShow")]
         [HttpGet]
-        public List<LocationWithModel> LocationWithShow()
+        public List<LocationWithModel> LocationWithShow(string code)
         {
-            return _ibll.LocationWithShow();
+            return _ibll.LocationWithShow(code);
         }
         //判断是否入库
         [Route("IsRuku")]
