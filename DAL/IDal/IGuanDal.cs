@@ -7,13 +7,6 @@ namespace DAL.IDal
 {
     public interface IGuanDal
     {
-
-        //用户 Userd 登录 注册 
-        #region
-        UserdModel UserdDenLuint(string username, string userpass);
-        int UserdZhuChe(UserdModel model);
-        #endregion
-
         //商品
         List<UnitModel> UnitBang();
         int GoodsAdd(GoodsModel model);

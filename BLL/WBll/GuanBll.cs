@@ -16,20 +16,6 @@ namespace BLL
             _idal = dal;
         }
 
-        //用户 Userd 登录 注册
-        #region
-        public UserdModel UserdDenLuint(string username, string userpass)
-        {
-            return _idal.UserdDenLuint(username, userpass);
-        }
-        //注册
-        public int UserdZhuChe(UserdModel model)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {

@@ -24,24 +24,6 @@ namespace DAL
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
 
-        //用户 Userd 登录 注册
-        #region
-        public UserdModel UserdDenLuint(string username,string userpass)
-        {
-            string sql = $"select count(1) from Userd where UserName='{username}'and UserPass='{userpass}'";
-
-            using (SqlConnection connection = new SqlConnection(conStr))
-            {
-                return connection.Query<UserdModel>(sql).ToList().FirstOrDefault();
-            }
-        }
-        //注册
-        public int UserdZhuChe(UserdModel model)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
         //商品
         #region
         //添加商品

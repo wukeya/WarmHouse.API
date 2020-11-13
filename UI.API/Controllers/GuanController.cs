@@ -29,24 +29,6 @@ namespace UI.API.Controllers
             _iwebh = iwebh;
         }
 
-        //登录
-        #region
-        [Route("UserdDenLuint")]
-        [HttpGet]
-        public IActionResult UserdDenLuint(string username, string userpass)
-        {
-            UserdModel model = _ibll.UserdDenLuint(username,userpass);
-
-            Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("username", model.UserName);
-            pairs.Add("userpass", model.UserPass);
-            var token = jwt.GetToken(pairs, 200000);
-            var json = jwt.GetPayload(token);
-
-            return Ok(json);
-        }
-        #endregion
-
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]

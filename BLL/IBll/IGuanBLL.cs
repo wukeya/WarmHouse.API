@@ -7,12 +7,7 @@ namespace BLL.IBll
 {
     public interface IGuanBLL
     {
-        //用户 Userd 登录 注册 
-        #region
-        UserdModel UserdDenLuint(string username, string userpass);
-        int UserdZhuChe(UserdModel model);
-        #endregion
-
+        
         List<UnitModel> UnitBang();
         int GoodsAdd(GoodsModel model);
         List<GoodsModel> GooodsShow(int pagIndex, int pagSize, int typeId, string name, out int pagCount);
