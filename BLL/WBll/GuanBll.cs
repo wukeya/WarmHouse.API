@@ -218,6 +218,14 @@ namespace BLL
             return _idal.LocationWithShow(code);
         }
 
+        public UserdModel UserdDenLuint(string username, string userpass)
+        {
+            throw new NotImplementedException();
+        }
 
+        public int UserdZhuChe(UserdModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
