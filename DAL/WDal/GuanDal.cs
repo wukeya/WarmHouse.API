@@ -410,7 +410,7 @@ namespace DAL
         //查看入库清单详细
         public List<LocationWithModel> LocationWithShow(string code) 
         {
-            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid where LocationRuCode='{code}'";
+            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=LocationId join Ruchecklist r on r.RuchecklistCode=l.LocationRuCode where LocationRuCode='{code}'";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
