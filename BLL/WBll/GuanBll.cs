@@ -15,21 +15,6 @@ namespace BLL
         {
             _idal = dal;
         }
-
-        //用户 Userd 登录 注册
-        #region
-        public UserdModel UserdDenLuint(string username, string userpass)
-        {
-            return _idal.UserdDenLuint(username,userpass);
-        }
-        //注册
-        public int UserdZhuChe(UserdModel model)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {
@@ -175,11 +160,7 @@ namespace BLL
         {
             return _idal.WareHouseShow();
         }
-        //显示库位详情
-        public List<LocationWithModel> LocationWithShow()
-        {
-            return _idal.LocationWithShow();
-        }
+     
         //判断是否入库
         public int IsRuKu(int oid)
         {
@@ -200,7 +181,43 @@ namespace BLL
         {
             return _idal.ReturndShan(ids);
         }
+        //添加入库清单表
+        public int RuChecklistAdd(RuchecklistModel model)
+        {
+            return _idal.RuChecklistAdd(model);
+        }
+        //添加临时库位详
+        public int TempLocationWithAdd(LocationWithModel model)
+        {
+            return _idal.TempLocationWithAdd(model);
+        }
+        //查看临时库位详情
+        public List<TempLocationWithModel> TempLocationWithShow()
+        {
+            return _idal.TempLocationWithShow();
+        }
+        //清空临时库位详情
+        public int TempLocationWithDelete()
+        {
+            return _idal.TempLocationWithDelete();
+        }
+        //查看入库清单
+        public List<RuchecklistModel> RuchecklistShow()
+        {
+            return _idal.RuchecklistShow();
+        }
+        //通过Id查看编号
+        public string SearchCode(int id)
+        {
+            return _idal.SearchCode(id);
 
-        
+        }
+        //查看入库清单详细
+        public List<LocationWithModel> LocationWithShow(string code)
+        {
+            return _idal.LocationWithShow(code);
+        }
+
+
     }
 }
