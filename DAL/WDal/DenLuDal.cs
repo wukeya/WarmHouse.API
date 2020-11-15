@@ -23,7 +23,7 @@ namespace DAL.WDal
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
 
-        //用户 Userd 登录 注册
+        //用户 Userd 登录 注册/
         #region
         public UserdModel UserdDenLuint(string username, string userpass)
         {
