@@ -217,15 +217,55 @@ namespace BLL
         {
             return _idal.LocationWithShow(code);
         }
-
-        public UserdModel UserdDenLuint(string username, string userpass)
+        //查找出库前商品
+        public List<LocationWithModel> BeforeChuKu(int id)
         {
-            throw new NotImplementedException();
+            return _idal.BeforeChuKu(id);
         }
-
-        public int UserdZhuChe(UserdModel model)
+        //出库过程
+        public int HavingChuKu(int num, int sid, int lid)
         {
-            throw new NotImplementedException();
+            return _idal.HavingChuKu(num, sid, lid);
+        }
+        //添加出库清单
+        public int RetrievealAdd(RetrievealModel model)
+        {
+            return _idal.RetrievealAdd(model);
+        }
+        //显示出库清单表
+        public List<RetrievealModel> RetrievealShow()
+        {
+            return _idal.RetrievealShow();
+        }
+        //添加出库清单详细表
+        public int RetrievealDeitAdd(RetrievealDeitModel model)
+        {
+            return _idal.RetrievealDeitAdd(model);
+        }
+        //通过Id查找Code
+        public string RetrievealSearchCode(int id)
+        {
+            return _idal.RetrievealSearchCode(id);
+        }
+        //查看出库清单详情
+        public List<RetrievealDeitModel> RetrievealDeitShow(string code)
+        {
+            return _idal.RetrievealDeitShow(code);
+        }
+        //添加出库清单详细临时表
+        public int TempRetrievealDeitAdd(TempRetrievealDeitModel model)
+        {
+            return _idal.TempRetrievealDeitAdd(model);
+        }
+        //显示出库清单详细临时表
+        public List<TempRetrievealDeitModel> TempRetrievealDeitShow()
+        {
+            return _idal.TempRetrievealDeitShow();
+        }
+        //清空出库清单临时
+        public int DeleteTempRetrievealDeit() 
+        {
+            return _idal.DeleteTempRetrievealDeit();
         }
     }
 }

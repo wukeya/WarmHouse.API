@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL;
 using BLL.IBll;
+using BLL.WBll;
 using DAL;
 using DAL.IDal;
+using DAL.WDal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +39,9 @@ namespace UI.API
             //×¢²á
             services.AddTransient<IGuanDal,GuanDal>();
             services.AddTransient<IGuanBLL, GuanBll>();
+            services.AddTransient<ICustomerDal,CustomerDal>();
+            services.AddTransient<ICustomerBll,CustomerBll>();
+            
             //¿çÓòÅäÖÃ
             
             services.AddCors(options =>

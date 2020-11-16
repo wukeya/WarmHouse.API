@@ -24,23 +24,7 @@ namespace DAL
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
 
-        //用户 Userd 登录 注册
-        #region
-        public UserdModel UserdDenLuint(string username,string userpass)
-        {
-            string sql = $"select count(1) from Userd where UserName='{username}'and UserPass='{userpass}'";
-
-            using (SqlConnection connection = new SqlConnection(conStr))
-            {
-                return connection.Query<UserdModel>(sql).ToList().FirstOrDefault();
-            }
-        }
-        //注册
-        public int UserdZhuChe(UserdModel model)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
+       
 
         //商品
         #region
@@ -435,7 +419,109 @@ namespace DAL
                 return list;
             }
         }
- 
+        //查找出库前商品
+        public List<LocationWithModel> BeforeChuKu(int id)
+        {
+            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=LocationId join Ruchecklist r on r.RuchecklistCode=l.LocationRuCode where g.GoodsId={id}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
+                return list;
+            }
+        }
+        //出库过程
+        public int HavingChuKu(int num, int sid, int lid)
+        {
+            //定义一个集合
+            List<string> list = new List<string>();
+            string sql = $"update OrderView set ONum=ONum-{num} where LocationWithId={lid}";
+            //把sql语句加入list
+            list.Add(sql);
+            sql = $"update SelectOrderDeit set SelectOrderDeitNum=SelectOrderDeitNum-{num} where SelectOrderDeitId={sid}";
+            list.Add(sql);
+            //执行事务
+            bool b = dBHelper.ExecuteSqlTran(list);
+            if (b==true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        //添加出库清单
+        public int RetrievealAdd(RetrievealModel model)
+        {
+            string sql = $"insert into Retrieveal values('{model.RetrievealCode}','{model.RetrievealUid}','{model.RetrievealTime}','{model.RetrievealState}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示出库清单表
+        public List<RetrievealModel> RetrievealShow()
+        {
+            string sql = $"select * from Retrieveal";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<RetrievealModel>(sql).ToList();
+            }
+        }
+        //添加出库清单详细表
+        public int RetrievealDeitAdd(RetrievealDeitModel model)
+        {
+            string sql = $"insert into RetrievealDeit values('{model.RetrievealDeitCode}','{model.RetrievealDeitLid}','{model.RetrievealDeitNum}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //通过Id查找Code
+        public string RetrievealSearchCode(int id)
+        {
+            string sql = $"select RetrievealCode  from Retrieveal where RetrievealId={id}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.ExecuteScalar(sql).ToString();
+            }
+        }
+        //查看出库清单详情
+        public List<RetrievealDeitModel> RetrievealDeitShow(string code)
+        {
+            string sql = $"select* from RetrievealDeit where RetrievealDeitCode='{code}'";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<RetrievealDeitModel>(sql).ToList();
+            }
+        }
+        //添加出库清单详细临时表
+        public int TempRetrievealDeitAdd(TempRetrievealDeitModel model)
+        {
+            string sql = $"insert into TempRetrievealDeit values('{model.TempRetrievealDeitLid}','{model.TempRetrievealDeitNum}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示出库清单详细临时表
+        public List<TempRetrievealDeitModel> TempRetrievealDeitShow() 
+        {
+            string sql = $"select *from TempRetrievealDeit";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Query<TempRetrievealDeitModel>(sql).ToList();
+            }
+        }
+        //清空出库清单详细临时
+        public int DeleteTempRetrievealDeit()
+        {
+            string sql = $"delete from TempRetrievealDeit";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
         //显示仓库
         public List<WareHouseModel> WareHouseShow()
         {
@@ -455,6 +541,7 @@ namespace DAL
                 return Convert.ToInt32(connection.ExecuteScalar(sql));
             }
         }
+
 
         
     }

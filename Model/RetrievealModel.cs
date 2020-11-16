@@ -9,11 +9,12 @@ namespace Model
     /// </summary>
     public class RetrievealModel
     {
-        public int      RetrievealId     { get; set; }//出库订单Id
-        public int      RetrievealUid    { get; set; }//出库用户Id
-        public int      RetrievealPid    { get; set; }//出库信息Id
-        public DateTime RetrievealTime   { get; set; }//出库时间
-        public string   RetrievealAdress { get; set; }//出库地址
-        public int      RetrievealState  { get; set; }//出库状态   --0未完成  1完成
+        public int      RetrievealId    { get; set; }//出库订单Id
+        public string      RetrievealCode  { get; set; }//出库用户Id
+        public int      RetrievealUid   { get; set; }//出库信息Id
+        public DateTime RetrievealTime  { get; set; }//出库时间
+        public int   RetrievealState { get; set; }//出库地址
+        public string nums { get; set; }
+        public string ids { get; set; }
     }
 }

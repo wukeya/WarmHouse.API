@@ -30,25 +30,6 @@ namespace UI.API.Controllers
         }
 
 
-
-        //登录
-        #region
-        [Route("UserdDenLuint")]
-        [HttpGet]
-        public IActionResult UserdDenLuint(string username, string userpass)
-        {
-            UserdModel model = _ibll.UserdDenLuint(username,userpass);
-
-            Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("username", model.UserName);
-            pairs.Add("userpass", model.UserPass);
-            var token = jwt.GetToken(pairs, 200000);
-            var json = jwt.GetPayload(token);
-
-            return Ok(json);
-        }
-        #endregion
-
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]
@@ -388,5 +369,102 @@ namespace UI.API.Controllers
         {
             return _ibll.ReturndShan(ids);
         }
+        //查找出库前商品
+        [Route("BeforeChuKu")]
+        [HttpGet]
+        public List<LocationWithModel> BeforeChuKu(int id)
+        {
+            return _ibll.BeforeChuKu(id);
+        }
+        //出库过程
+        [HttpGet("HavingChuKu")]
+        [HttpGet]
+        public int HavingChuKu(int num, int sid, int lid)
+        {
+            try
+            {
+                _ibll.HavingChuKu(num, sid, lid);
+                //添加到出库清单详细临时
+                //实例化Model
+                TempRetrievealDeitModel model = new TempRetrievealDeitModel();
+                model.TempRetrievealDeitNum = num;
+                model.TempRetrievealDeitLid = lid;
+                _ibll.TempRetrievealDeitAdd(model);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+        //添加出库清单
+        [Route("RetrievealAdd")]
+        [HttpPost]
+        public int RetrievealAdd(string ff="")
+        {
+            try
+            {
+                RetrievealModel model = JsonConvert.DeserializeObject<RetrievealModel>(ff);
+                //显示出库清单详细临时表
+               List<TempRetrievealDeitModel> list= _ibll.TempRetrievealDeitShow();
+                model.RetrievealState = 0;
+                //添加出库清单
+                _ibll.RetrievealAdd(model);
+                //循环添加出库清单详细表
+                foreach (var item in list)
+                {
+                    //实例化出库清单详细表
+                    RetrievealDeitModel model1 = new RetrievealDeitModel();
+                    model1.RetrievealDeitCode = model.RetrievealCode;
+                    model1.RetrievealDeitLid = item.TempRetrievealDeitLid;
+                    model1.RetrievealDeitNum = item.TempRetrievealDeitNum;
+                    _ibll.RetrievealDeitAdd(model1);
+                }
+                //清空出库清单临时表
+                _ibll.DeleteTempRetrievealDeit();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+        //显示出库清单表
+        [Route("RetrievealShow")]
+        [HttpGet]
+        public List<RetrievealModel> RetrievealShow()
+        {
+            return _ibll.RetrievealShow();
+        }
+        //添加出库清单详细表
+        [Route("RetrievealDeitAdd")]
+        [HttpPost]
+        public int RetrievealDeitAdd(RetrievealDeitModel model)
+        {
+            return _ibll.RetrievealDeitAdd(model);
+        }
+        //通过Id查找Code
+        [Route("RetrievealSearchCode")]
+        [HttpGet]
+        public string RetrievealSearchCode(int id)
+        {
+            return _ibll.RetrievealSearchCode(id);
+        }
+        //查看出库清单详情
+        [Route("RetrievealDeitShow")]
+        [HttpGet]
+        public List<RetrievealDeitModel> RetrievealDeitShow(string code)
+        {
+            return _ibll.RetrievealDeitShow(code);
+        }
+       
+           
+       
+
+
     }
 }

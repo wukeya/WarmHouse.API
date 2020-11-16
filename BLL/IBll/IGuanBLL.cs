@@ -7,11 +7,7 @@ namespace BLL.IBll
 {
     public interface IGuanBLL
     {
-        //用户 Userd 登录 注册 
-        #region
-        UserdModel UserdDenLuint(string username, string userpass);
-        int UserdZhuChe(UserdModel model);
-        #endregion
+      
 
         List<UnitModel> UnitBang();
         int GoodsAdd(GoodsModel model);
@@ -69,6 +65,26 @@ namespace BLL.IBll
         List<LocationWithModel> LocationWithShow(string code);
         //判断是否入库
         int IsRuKu(int oid);
+        //出库前查找商品
+        List<LocationWithModel> BeforeChuKu(int id);
+        //出库过程
+        int HavingChuKu(int num, int sid, int lid);
+        //添加出库清单
+        int RetrievealAdd(RetrievealModel model);
+        //显示出库清单
+        List<RetrievealModel> RetrievealShow();
+        //添加出库清单详情
+        int RetrievealDeitAdd(RetrievealDeitModel model);
+        //查找编号
+        string RetrievealSearchCode(int id);
+        //显示出库清单详情
+        List<RetrievealDeitModel> RetrievealDeitShow(string code);
+        //添加出库清单详细临时
+        int TempRetrievealDeitAdd(TempRetrievealDeitModel model);
+        //显示出库清单详细临时
+        List<TempRetrievealDeitModel> TempRetrievealDeitShow();
+        //清空出库清单临时
+        int DeleteTempRetrievealDeit();
         //退货
         int ReturndAdd(ReturndModel model);
         List<ReturndModel> ReturndShow();
