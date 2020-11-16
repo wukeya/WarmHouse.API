@@ -21,10 +21,10 @@ namespace BLL.WBll
         {
             return _idal.UserdDenLuint(username, userpass);
         }
-        //注册
-        public UserdModel UserdZhuChe(string username, string userpass)
+        //注册 
+        public int UserdZhuChe(UserdModel model)
         {
-            return _idal.UserdZhuChe(username, userpass);
+            return _idal.UserdZhuChe(model);
         }
         #endregion
     }

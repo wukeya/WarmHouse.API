@@ -34,29 +34,13 @@ namespace DAL.WDal
                 return connection.Query<UserdModel>(sql).ToList().FirstOrDefault();
             }
         }
-        //注册 insert into Userd values('{model.UserName}','{model.UserPass}','{model.UserFId}') 
-        public UserdModel UserdZhuChe(string username, string userpass)
+        //注册 
+        public int UserdZhuChe(UserdModel model)
         {
-            string sql = $"select count(1) from Userd where UserName='{username}'and UserPass='{userpass}'";
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                sql += $"and insert int Userd values('{username}')";
-            }
-            else
-            {
-                Console.WriteLine("<script>alrer('请检查账号是否正确'),location.href('/Guan/GoodsShow');</script>");
-            }
-            if (string.IsNullOrWhiteSpace(userpass))
-            {
-                sql += $"and insert int Userd values('{userpass}')";
-            }
-            else
-            {
-                Console.WriteLine("<script>alrer('输入密码不正确'),location.href('/Guan/GoodsShow');</script>");
-            }
+            string sql = $"insert into Userd values('{model.UserName}','{model.UserPass}') ";
             using (SqlConnection connection = new SqlConnection(conStr))
             {
-                return connection.Query<UserdModel>(sql).ToList().FirstOrDefault();
+                return connection.Execute(sql);
             }
         }
         #endregion

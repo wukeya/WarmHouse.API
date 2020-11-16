@@ -10,7 +10,7 @@ namespace DAL.IDal
         //用户 Userd 登录 注册 
         #region
         UserdModel UserdDenLuint(string username, string userpass);
-        UserdModel UserdZhuChe(string username, string userpass);
+        int UserdZhuChe(UserdModel model);
         #endregion
     }
 }

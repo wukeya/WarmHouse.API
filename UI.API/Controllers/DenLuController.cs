@@ -43,15 +43,15 @@ namespace UI.API.Controllers
         }
         [Route("UserdZhuChe")]
         [HttpPost]
-        public IActionResult UserdZhuChe(string username, string userpass)
+        public IActionResult UserdZhuChe(UserdModel model)
         {
-            UserdModel zhuce = _ibll.UserdZhuChe(username, userpass);
+            var name = model.UserName;
+            var pass = model.UserPass;
             Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("username", zhuce.UserName);
-            pairs.Add("userpass", zhuce.UserPass);
+            pairs.Add(name, model.UserName);
+            pairs.Add(pass, model.UserPass);
             var token = jwt.GetToken(pairs, 200000);
             var json = jwt.GetPayload(token);
-
             return Ok(json);
         }
         #endregion
