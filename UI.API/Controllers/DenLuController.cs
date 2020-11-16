@@ -18,8 +18,8 @@ namespace UI.API.Controllers
         JWTHelper jwt = new JWTHelper();
         public IWebHostEnvironment _iwebh;
         //依赖注入
-        private IGuanBLL _ibll;
-        public DenLuController(IGuanBLL ibll, IWebHostEnvironment iwebh)
+        private IDengLuBLL _ibll;
+        public DenLuController(IDengLuBLL ibll, IWebHostEnvironment iwebh)
         {
             _ibll = ibll;
             _iwebh = iwebh;
