@@ -541,9 +541,34 @@ namespace DAL
                 return Convert.ToInt32(connection.ExecuteScalar(sql));
             }
         }
-
-
-        
+        #endregion
+        //调库 LocationWith
+        public int LocationWithUpdate(LocationWithModel model)
+        {
+            string sql = $"update UpdateLocation set LocationWid='{model.LocationWid}',LocationLid='{model.LocationLid}' where LocationWithId='{model.LocationWithId}'";
+            using (SqlConnection connection = new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //
+        public List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount)
+        {
+            string sql = "LocationWithPag";
+            //给输出参数赋值
+            pagCount = 0;
+            //实例化一个字典
+            Dictionary<string, object> pairs = new Dictionary<string, object>();
+            pairs.Add("@pagIndex", pagIndex);
+            pairs.Add("@pagSize", pagSize);
+            pairs.Add("@name", name);
+            pairs.Add("@pagCount", pagCount);
+            //调用储存过程
+            DataTable table = dBHelper.GetProc(sql, pairs, out pagCount);
+            //把DataTable转化为List
+            List<LocationWithModel> list = dBHelper.DataTableToList<LocationWithModel>(table);
+            return list;
+        }
     }
 }
-#endregion
+

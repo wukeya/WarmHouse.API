@@ -267,5 +267,15 @@ namespace BLL
         {
             return _idal.DeleteTempRetrievealDeit();
         }
+        //调库
+        public int LocationWithUpdate(LocationWithModel model)
+        {
+            return _idal.LocationWithUpdate(model);
+        }
+
+        public List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount)
+        {
+            return _idal.LocationWithShow(pagIndex, pagSize, name, out pagCount);
+        }
     }
 }

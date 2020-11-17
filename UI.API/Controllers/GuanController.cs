@@ -461,9 +461,22 @@ namespace UI.API.Controllers
         {
             return _ibll.RetrievealDeitShow(code);
         }
-       
-           
-       
+        //显示需要调库的信息
+
+        [Route("LocationWithUpdate")]
+        [HttpPost]
+        public int LocationWithUpdate(LocationWithModel model)
+        {
+            return _ibll.LocationWithUpdate(model);
+        }
+
+        //调库
+        [Route("LocationWithShow")]
+        [HttpGet]
+        public List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount)
+        {
+            return _ibll.LocationWithShow(pagIndex, pagSize,name, out pagCount);
+        }
 
 
     }
