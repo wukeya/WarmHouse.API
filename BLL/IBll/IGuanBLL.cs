@@ -90,7 +90,7 @@ namespace BLL.IBll
         List<ReturndModel> ReturndShow();
         int ReturndShan(string ids);
         //调库 库位详情
-        List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount);
+        List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount);
         int LocationWithUpdate(LocationWithModel model);  //修改
 
     }

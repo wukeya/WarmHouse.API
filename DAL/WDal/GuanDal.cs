@@ -552,9 +552,9 @@ namespace DAL
             }
         }
         //
-        public List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount)
+        public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
         {
-            string sql = "LocationWithPag";
+            string sql = "UpdateLocationPag";
             //给输出参数赋值
             pagCount = 0;
             //实例化一个字典

@@ -273,9 +273,9 @@ namespace BLL
             return _idal.LocationWithUpdate(model);
         }
 
-        public List<LocationWithModel> LocationWithShow(int pagIndex, int pagSize, string name, out int pagCount)
+        public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
         {
-            return _idal.LocationWithShow(pagIndex, pagSize, name, out pagCount);
+            return _idal.UpdateLocationShow(pagIndex, pagSize, name, out pagCount);
         }
     }
 }
