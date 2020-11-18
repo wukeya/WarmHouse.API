@@ -24,8 +24,6 @@ namespace DAL
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
 
-       
-
         //商品
         #region
         //添加商品
@@ -542,7 +540,8 @@ namespace DAL
             }
         }
         #endregion
-        //调库 LocationWith
+        //调库 
+        #region
         public int LocationWithUpdate(LocationWithModel model)
         {
             string sql = $"update UpdateLocation set LocationWid='{model.LocationWid}',LocationLid='{model.LocationLid}' where LocationWithId='{model.LocationWithId}'";
@@ -569,6 +568,7 @@ namespace DAL
             List<LocationWithModel> list = dBHelper.DataTableToList<LocationWithModel>(table);
             return list;
         }
+        #endregion
     }
 }
 
