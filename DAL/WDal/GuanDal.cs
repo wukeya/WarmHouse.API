@@ -550,8 +550,8 @@ namespace DAL
             {
                 return connection.Execute(sql);
             }
-        }
-        //
+        } 
+        //显示调库信息
         public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
         {
             string sql = "UpdateLocationPag";
