@@ -28,8 +28,8 @@ namespace UI.API.Controllers
             _ibll = ibll;
             _iwebh = iwebh;
         }
-
-
+        //商品
+        #region
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]
@@ -138,6 +138,11 @@ namespace UI.API.Controllers
         }
         [Route("EquipmentAdd")]
         [HttpPost]
+        #endregion
+
+        //设备
+        #region
+
         //添加设备
         public int EquipmentAdd(EquipmentModel model)
         {
@@ -172,6 +177,11 @@ namespace UI.API.Controllers
         {
             return _ibll.EquipmentUpdate(model);
         }
+        #endregion
+
+        //报损
+        #region
+
         //添加报损
         [Route("ReportAdd")]
         [HttpPost]
@@ -207,6 +217,11 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
+        #endregion
+
+        //采购
+        #region
+
         //添加订单和详情表
         [Route("OrderDeitAllAdd")]
         [HttpPost]
@@ -244,6 +259,11 @@ namespace UI.API.Controllers
         {
             return _ibll.OrderDeitShow(pid);
         }
+        #endregion
+
+        //库位
+        #region
+
         //添加库位
         [Route("LocationAdd")]
         [HttpPost]
@@ -314,7 +334,11 @@ namespace UI.API.Controllers
         {
             return _ibll.WareHouseShow();
         }
-      
+        #endregion
+
+        //入库
+        #region
+
         //查看入库清单
         [Route("RuchecklistShow")]
         [HttpGet]
@@ -344,6 +368,11 @@ namespace UI.API.Controllers
         {
             return _ibll.IsRuKu(oid);
         }
+        #endregion
+
+        //退货
+        #region
+
         //添加退货信息
         [Route("ReturndAdd")]
         [HttpPost]
@@ -369,6 +398,11 @@ namespace UI.API.Controllers
         {
             return _ibll.ReturndShan(ids);
         }
+        #endregion
+
+        //出库
+        #region
+
         //查找出库前商品
         [Route("BeforeChuKu")]
         [HttpGet]
@@ -461,8 +495,11 @@ namespace UI.API.Controllers
         {
             return _ibll.RetrievealDeitShow(code);
         }
+        #endregion
 
         //调库
+        #region
+
         [Route("LocationWithUpdate")]
         [HttpPost]
         public int LocationWithUpdate(LocationWithModel model)
@@ -477,7 +514,7 @@ namespace UI.API.Controllers
         {
             return _ibll.UpdateLocationShow(pagIndex, pagSize,name, out pagCount);
         }
-
+        #endregion
 
     }
 }
