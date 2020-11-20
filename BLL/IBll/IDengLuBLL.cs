@@ -9,7 +9,8 @@ namespace BLL.IBll
     {
         //用户 Userd 登录 注册 
         #region
-        UserdModel UserdDenLuint(string username, string userpass);
+        string SearchPass(string username);
+        UserdModel UserLogin(string name, string pass);
         int UserdZhuChe(UserdModel model);
         #endregion
     }

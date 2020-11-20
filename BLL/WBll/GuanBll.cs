@@ -15,9 +15,6 @@ namespace BLL
         {
             _idal = dal;
         }
-
-        //商品
-        #region
         //添加商品
         public int GoodsAdd(GoodsModel model)
         {
@@ -68,11 +65,6 @@ namespace BLL
         {
             return _idal.SuppleBang();
         }
-        #endregion
-
-        //设备
-        #region
-
         //添加设备
         public int EquipmentAdd(EquipmentModel model)
         {
@@ -98,20 +90,20 @@ namespace BLL
         {
             return _idal.EquipmentUpdate(model);
         }
-        #endregion
-
-        //报损
-        #region
-
+        //修改设备状态
+        public int EquipmentStateUpdate(int state, int id)
+        {
+            return _idal.EquipmentStateUpdate(state, id);
+        }
         //添加报损
         public int ReportAdd(ReportModel model)
         {
             return _idal.ReportAdd(model);
         }
         //显示报损
-        public List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount)
+        public List<ReportModel> ReportShow(int pagIndex, int pagSize)
         {
-            return _idal.ReportShow(pagIndex, pagSize, out pagCount);
+            return _idal.ReportShow(pagIndex, pagSize);
         }
         //删除报损
         public int ReportShan(string ids)
@@ -128,11 +120,6 @@ namespace BLL
         {
             return _idal.ReportUpdate(model);
         }
-        #endregion
-
-        //采购
-        #region
-
         //添加采购订单表
         public int PurchaseAdd(PurchaseModel model)
         {
@@ -158,11 +145,6 @@ namespace BLL
         {
             return _idal.OrderUpdateState(state, oid);
         }
-        #endregion
-
-        //库位
-        #region
-
         //添加库位
         public int LocationAdd(LocationModel model)
         {
@@ -183,19 +165,39 @@ namespace BLL
         {
             return _idal.WareHouseShow();
         }
-     
+        //显示仓库详细
+        public List<LocationWithModel> WareHouseDeitShow(int id) 
+        {
+            return _idal.WareHouseDeitShow(id);
+        }
+        //添加仓库
+        public int WarmHouseAdd(WareHouseModel model)
+        {
+            return _idal.WarmHouseAdd(model);
+        }
+        //添加临时库位
+        public int TemLocationAdd(LocationModel model)
+        {
+            return _idal.TemLocationAdd(model);
+        }
+        //显示临时库位
+        public List<LocationModel> TemLocationShow()
+        {
+            return _idal.TemLocationShow();
+        }
+        //清空临时库位
+        public int TemLocationDelete()
+        {
+            return _idal.TemLocationDelete();
+        }
+
         //判断是否入库
         public int IsRuKu(int oid)
         {
             return _idal.IsRuKu(oid);
         }
-        #endregion
-
-        //退货
-        #region
-
         //添加退货信息
-        public int ReturndAdd(ReturndModel model) 
+        public  int ReturndAdd(ReturndModel model) 
         {
             return _idal.ReturndAdd(model);
         }
@@ -209,11 +211,6 @@ namespace BLL
         {
             return _idal.ReturndShan(ids);
         }
-        #endregion
-
-        //入库
-        #region
-
         //添加入库清单表
         public int RuChecklistAdd(RuchecklistModel model)
         {
@@ -250,11 +247,11 @@ namespace BLL
         {
             return _idal.LocationWithShow(code);
         }
-        #endregion
-
-        //出库
-        #region
-
+        //查看全部入库清单详细
+        public List<LocationWithModel> AllLocationWithShow()
+        {
+            return _idal.AllLocationWithShow();
+        }
         //查找出库前商品
         public List<LocationWithModel> BeforeChuKu(int id)
         {
@@ -305,20 +302,10 @@ namespace BLL
         {
             return _idal.DeleteTempRetrievealDeit();
         }
-        #endregion
-
-        //调库
-        #region
-
-        public int LocationWithUpdate(LocationWithModel model)
+        //根据库位详情Id减去商品数量
+        public int GoodsNumReduce(int lid, int num) 
         {
-            return _idal.LocationWithUpdate(model);
+            return _idal.GoodsNumReduce(lid, num);
         }
-
-        public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
-        {
-            return _idal.UpdateLocationShow(pagIndex, pagSize, name, out pagCount);
-        }
-        #endregion
     }
 }

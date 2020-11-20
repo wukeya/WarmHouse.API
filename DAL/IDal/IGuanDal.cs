@@ -8,9 +8,9 @@ namespace DAL.IDal
     public interface IGuanDal
     {
 
-        //商品
-        #region
+       
 
+        //商品
         List<UnitModel> UnitBang();
         int GoodsAdd(GoodsModel model);
         List<GoodsModel> GooodsShow(int pagIndex, int pagSize, int typeId, string name, out int pagCount);
@@ -20,28 +20,19 @@ namespace DAL.IDal
         List<TypeModel> TypeBanag();
         List<SuppleModel> SuppleBang();
         int GoodsUpdateState(int state, int id);
-        #endregion
-
         //设备
-        #region
         int EquipmentAdd(EquipmentModel model);
         List<EquipmentModel> EquipmentShow(int pagIndex, int pagSize, string name, out int pagCount);
         int EquipmentShan(string ids);
         EquipmentModel EquipmentFan(int id);
         int EquipmentUpdate(EquipmentModel model);
-        #endregion
-
+        int EquipmentStateUpdate(int state, int id);
         //报损
-        #region
         int ReportAdd(ReportModel model);
-        List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount);
+        List<ReportModel> ReportShow(int pagIndex, int pagSize);
         int ReportShan(string ids);
         ReportModel ReportFan(int id);
         int ReportUpdate(ReportModel model);
-        #endregion
-
-        //采购
-        #region
         //添加采购订单表
         int PurchaseAdd(PurchaseModel model);
         //添加订单详情表
@@ -52,22 +43,27 @@ namespace DAL.IDal
         List<OrderDeitModel> OrderDeitShow(int pid);
         //修改采购订单详情State
         int OrderUpdateState(int state, int oid);
-        #endregion
-
-        //仓库
-        #region
         //显示仓库
         List<WareHouseModel> WareHouseShow();
+        //显示仓库详情
+        List<LocationWithModel> WareHouseDeitShow(int id);
+        //添加仓库
+        int WarmHouseAdd(WareHouseModel model);
         //添加库位
         int LocationAdd(LocationModel model);
+        //添加临时库位
+        int TemLocationAdd(LocationModel model);
+        //显示临时库位
+        List<LocationModel> TemLocationShow();
+        //清空临时库位
+        int TemLocationDelete();
         //显示库位
         List<LocationModel> LocationShow(int wid);
+        //显示全部库位详情表
+        List<LocationWithModel> AllLocationWithShow();
         //添加库位详
         int LocationWithAdd(LocationWithModel model);
-        #endregion
-
-        //入库
-        #region
+       
         //添加入库清单
         int RuChecklistAdd(RuchecklistModel model);
         //添加库位详情临时
@@ -84,10 +80,6 @@ namespace DAL.IDal
         List<LocationWithModel> LocationWithShow(string code);
         //判断是否入库
         int IsRuKu(int oid);
-        #endregion
-
-        //出库
-        #region
         //出库前查找商品
         List<LocationWithModel> BeforeChuKu(int id);
         //出库过程
@@ -108,22 +100,14 @@ namespace DAL.IDal
         List<TempRetrievealDeitModel> TempRetrievealDeitShow();
         //清空出库清单临时
         int DeleteTempRetrievealDeit();
-        #endregion
-
         //退货
-        #region
-
         int ReturndAdd(ReturndModel model);
         List<ReturndModel> ReturndShow();
         int ReturndShan(string ids);
-        #endregion
+        int GoodsNumReduce(int lid, int num);
 
-        //调库
-        #region
 
-        //调库 库位详情
-        List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount);
-        int LocationWithUpdate(LocationWithModel model);  //修改
-        #endregion
+
+
     }
 }

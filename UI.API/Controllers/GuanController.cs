@@ -28,8 +28,8 @@ namespace UI.API.Controllers
             _ibll = ibll;
             _iwebh = iwebh;
         }
-        //商品
-        #region
+
+
         //绑定单位
         [Route("UnitBang")]
         [HttpGet]
@@ -138,23 +138,20 @@ namespace UI.API.Controllers
         }
         [Route("EquipmentAdd")]
         [HttpPost]
-        #endregion
-
-        //设备
-        #region
-
         //添加设备
-        public int EquipmentAdd(EquipmentModel model)
+        public int EquipmentAdd(string ff="")
         {
+            EquipmentModel model = JsonConvert.DeserializeObject<EquipmentModel>(ff);
             return _ibll.EquipmentAdd(model);
         }
         //显示设备
         [Route("EquipmentShow")]
         [HttpGet]
-        public  List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
+        public  IActionResult EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
         {
-            int pagCount = 0;  
-            return _ibll.EquipmentShow(pagIndex, pagSize, name, out pagCount);
+            int pagCount = 0;
+            List<EquipmentModel> list= _ibll.EquipmentShow(pagIndex, pagSize, name, out pagCount);
+            return Ok(new { a = list, pagCount = pagCount });
         }
         //删除设备
         [Route("EquipmentShan")]
@@ -177,24 +174,60 @@ namespace UI.API.Controllers
         {
             return _ibll.EquipmentUpdate(model);
         }
-        #endregion
-
-        //报损
-        #region
-
+        //修改设备状态
+        [Route("EquipmentStateUpdate")]
+        [HttpGet]
+        //修改设备状态
+        public int EquipmentStateUpdate(int state, int id)
+        {
+            return _ibll.EquipmentStateUpdate(state, id);
+        }
         //添加报损
         [Route("ReportAdd")]
         [HttpPost]
-        public int ReportAdd(ReportModel model)
+        public int ReportAdd(string ff="")
         {
-            return _ibll.ReportAdd(model);
+           
+            try
+            {
+                ReportModel model = JsonConvert.DeserializeObject<ReportModel>(ff);
+                model.ReportedTime = DateTime.Now;
+                var numarr = model.nums.ToString().Split(',');
+                var gidarr = model.gids.ToString().Split(',');
+                //循环添加
+                for (int i = 0; i < numarr.Length; i++)
+                {
+                    //实例化ReportModel
+                    ReportModel model1 = new ReportModel();
+                    model1.ReportedTime = DateTime.Now;
+                    model1.ReportedNum = Convert.ToInt32(numarr[i]);
+                    model1.ReportedGid = Convert.ToInt32(gidarr[i]);
+                    _ibll.ReportAdd(model1);
+                    //根据库位详情Id减去商品数量
+                    _ibll.GoodsNumReduce(model1.ReportedGid, model1.ReportedNum);
+
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+            
         }
+        
         //显示报损
         [Route("ReportShow")]
         [HttpGet]
-        public List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount)
-        {
-            return _ibll.ReportShow(pagIndex, pagSize, out pagCount);
+        public IActionResult ReportShow(int pagIndex=1, int pagSize=5)
+        {   
+            List<ReportModel> list= _ibll.ReportShow(pagIndex, pagSize);
+            var pagCount = list.Count;
+            //分页显示
+            list = list.Skip((pagIndex - 1) * pagSize).Take(pagSize).ToList();
+            return Ok(new { a = list, pagCount = pagCount });
         }
         //删除报损
         [Route("ReportShan")]
@@ -217,11 +250,6 @@ namespace UI.API.Controllers
         {
             return _ibll.ReportUpdate(model);
         }
-        #endregion
-
-        //采购
-        #region
-
         //添加订单和详情表
         [Route("OrderDeitAllAdd")]
         [HttpPost]
@@ -259,11 +287,6 @@ namespace UI.API.Controllers
         {
             return _ibll.OrderDeitShow(pid);
         }
-        #endregion
-
-        //库位
-        #region
-
         //添加库位
         [Route("LocationAdd")]
         [HttpPost]
@@ -334,11 +357,66 @@ namespace UI.API.Controllers
         {
             return _ibll.WareHouseShow();
         }
-        #endregion
+        //显示仓库详细
+        [Route("WareHouseDeitShow")]
+        [HttpGet]
+        public List<LocationWithModel> WareHouseDeitShow(int id)
+        {
+            return _ibll.WareHouseDeitShow(id);
+        }
+        //添加仓库
+        [Route("WarmHouseAdd")]
+        [HttpPost]
+        public int WarmHouseAdd(string ff="")
+        {
+            try
+            {
+                WareHouseModel model = JsonConvert.DeserializeObject<WareHouseModel>(ff);
+                //添加仓库
+                int i = _ibll.WarmHouseAdd(model);
+                //临时库位显示
+                List<LocationModel> list = _ibll.TemLocationShow();
+                //循环加入库位
+                foreach (var item in list)
+                {
+                    //实例化LocationModel
+                    LocationModel model1 = new LocationModel();
+                    model1.LocationWid = i;
+                    model1.LocationName = item.LocationName;
+                    model1.LocationMin = item.LocationMin;
+                    model1.LocationMax = item.LocationMax;
+                    //添加库位
+                    _ibll.LocationAdd(model1);
+                    
+                }
+                //清空临时库位
+                _ibll.TemLocationDelete();
+                return 1;
+            }
+            catch (Exception ex)
+            {
 
-        //入库
-        #region
-
+                throw ex;
+            }
+            
+        }
+        //添加临时库位
+        [Route("TemLocationAdd")]
+        [HttpPost]
+        public int TemLocationAdd(string ff="")
+        {
+            LocationModel model = JsonConvert.DeserializeObject<LocationModel>(ff);
+            model.LocationWid = 0;
+            return _ibll.TemLocationAdd(model);
+        }
+        //显示临时库位
+        [Route("TemLocationShow")]
+        [HttpGet]
+        public List<LocationModel> TemLocationShow()
+        {
+            return _ibll.TemLocationShow();
+        }
+       
         //查看入库清单
         [Route("RuchecklistShow")]
         [HttpGet]
@@ -361,6 +439,18 @@ namespace UI.API.Controllers
         {
             return _ibll.LocationWithShow(code);
         }
+        //查看全部入库清单详细
+        [Route("AllLocationWithShow")]
+        [HttpGet]
+        public IActionResult AllLocationWithShow(int pagIndex=1,int pagSize=4)
+        {
+            List<LocationWithModel> list= _ibll.AllLocationWithShow();
+            //获取总行数
+            int count = list.Count;
+            //执行分页
+            list = list.Skip((pagIndex - 1) * pagSize).Take(pagSize).ToList();
+            return Ok(new { a = list, pagCount = count });
+        }
         //判断是否入库
         [Route("IsRuku")]
         [HttpGet]
@@ -368,11 +458,6 @@ namespace UI.API.Controllers
         {
             return _ibll.IsRuKu(oid);
         }
-        #endregion
-
-        //退货
-        #region
-
         //添加退货信息
         [Route("ReturndAdd")]
         [HttpPost]
@@ -398,11 +483,6 @@ namespace UI.API.Controllers
         {
             return _ibll.ReturndShan(ids);
         }
-        #endregion
-
-        //出库
-        #region
-
         //查找出库前商品
         [Route("BeforeChuKu")]
         [HttpGet]
@@ -495,26 +575,10 @@ namespace UI.API.Controllers
         {
             return _ibll.RetrievealDeitShow(code);
         }
-        #endregion
+       
+           
+       
 
-        //调库
-        #region
-
-        [Route("LocationWithUpdate")]
-        [HttpPost]
-        public int LocationWithUpdate(LocationWithModel model)
-        {
-            return _ibll.LocationWithUpdate(model);
-        }
-
-        //显示需要调库的信息
-        [Route("UpdateLocationShow")]
-        [HttpGet]
-        public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
-        {
-            return _ibll.UpdateLocationShow(pagIndex, pagSize,name, out pagCount);
-        }
-        #endregion
 
     }
 }

@@ -24,6 +24,8 @@ namespace DAL
         //实例化DBhelper
         DBHelper dBHelper = new DBHelper(_configuration);
 
+       
+
         //商品
         #region
         //添加商品
@@ -136,6 +138,10 @@ namespace DAL
         //显示设备
         public List<EquipmentModel> EquipmentShow(int pagIndex, int pagSize, string name, out int pagCount) 
         {
+            if (name==null)
+            {
+                name = "";
+            }
             string sql = "EquipmentPag";
             //给输出参数赋值
             pagCount = 0;
@@ -178,6 +184,15 @@ namespace DAL
                 return connection.Execute(sql);
             }
         }
+        //修改设备状态
+        public int EquipmentStateUpdate(int state, int id) 
+        {
+            string sql = $"update Equipment set EquipmentState={state} where EquipmentId={id}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
         #endregion
         //报损
         #region
@@ -191,21 +206,14 @@ namespace DAL
             }
         }
         //显示报损
-        public List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount) 
+        public List<ReportModel> ReportShow(int pagIndex, int pagSize) 
         {
-            pagCount = 0;
-            string sql = "ReportPag";
-            //实例化一个字典
-            Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("@pagIndex", pagIndex);
-            pairs.Add("@pagSize", pagSize);
-            pairs.Add("@pagCount", pagCount);
-            //调用储存过程
-            DataTable tb = dBHelper.GetProc(sql, pairs, out pagCount);
-            //吧DataTable转化为list
-            List<ReportModel> list = dBHelper.DataTableToList<ReportModel>(tb);
-            return list;
-
+            string sql = "select * from OrderView o join Reported r on r.ReportedGid=o.LocationWithId join Goods g on g.GoodsId=o.OGid join  warehouse w on w.WareHouseId=o.LocationWid join location lo on lo.LocationId=o.LocationLid";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<ReportModel> list = connection.Query<ReportModel>(sql).ToList();
+                return list;
+            }
         }
         //删除报损
         public int ReportShan(string ids) 
@@ -408,10 +416,24 @@ namespace DAL
 
         }
         //查看入库清单详细
-        public List<LocationWithModel> LocationWithShow(string code) 
+        public List<LocationWithModel> LocationWithShow(string code="") 
         {
-            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=LocationId join Ruchecklist r on r.RuchecklistCode=l.LocationRuCode where LocationRuCode='{code}'";
+            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=LocationId join Ruchecklist r on r.RuchecklistCode=l.LocationRuCode where 1=1 ";
+            if (!string.IsNullOrEmpty(code))
+            {
+                sql += $"and LocationRuCode='{code}'";
+            }
             using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
+                return list;
+            }
+        }
+        //查看全部入库清单详细
+        public List<LocationWithModel> AllLocationWithShow()
+        {
+            string sql = $"select * from LocationWith l join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=LocationId join Ruchecklist r on r.RuchecklistCode=l.LocationRuCode where 1=1 ";
+            using (SqlConnection connection = new SqlConnection(conStr))
             {
                 List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
                 return list;
@@ -487,7 +509,7 @@ namespace DAL
         //查看出库清单详情
         public List<RetrievealDeitModel> RetrievealDeitShow(string code)
         {
-            string sql = $"select* from RetrievealDeit where RetrievealDeitCode='{code}'";
+            string sql = $" select *from RetrievealDeit r join LocationWith l on l.LocationWithId=r.RetrievealDeitLid join WareHouse w on w.WareHouseId=l.LocationWid join Location on l.LocationLid=Location.LocationId join OrderDeit o on o.OrderId=l.LocationWithOid join Goods g on g.GoodsId=o.OGid where RetrievealDeitCode='{code}'";
             using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Query<RetrievealDeitModel>(sql).ToList();
@@ -529,7 +551,55 @@ namespace DAL
                 return connection.Query<WareHouseModel>(sql).ToList();
             }
         }
-     
+        //显示仓库详细
+        public List<LocationWithModel> WareHouseDeitShow(int id)
+        {
+            string sql = $" select *from WarmView where WareHouseId={id}";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<LocationWithModel> list = connection.Query<LocationWithModel>(sql).ToList();
+                return list;
+            }
+        }
+        //添加仓库
+        public int WarmHouseAdd(WareHouseModel model) 
+        {
+            string sql = @$"insert into WareHouse values('{model.WareHouseName}');
+                         select @@IDENTITY";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return Convert.ToInt32(connection.ExecuteScalar(sql));
+            }
+        }
+       
+        //添加临时库位
+        public int TemLocationAdd(LocationModel model)
+        {
+            string sql = $"insert into TemLocation values('{model.LocationWid}','{model.LocationName}','{model.LocationMin}','{model.LocationMax}')";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
+        //显示临时库位
+        public List<LocationModel> TemLocationShow()
+        {
+            string sql = $"select *from TemLocation";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                List<LocationModel> list = connection.Query<LocationModel>(sql).ToList();
+                return list;
+            }
+        }
+        //清空临时库位
+        public int TemLocationDelete() 
+        {
+            string sql = $"delete from TemLocation";
+            using (SqlConnection connection=new SqlConnection(conStr))
+            {
+                return connection.Execute(sql);
+            }
+        }
         //判断是否入库
         public int IsRuKu(int oid=0)
         {
@@ -539,36 +609,15 @@ namespace DAL
                 return Convert.ToInt32(connection.ExecuteScalar(sql));
             }
         }
-        #endregion
-        //调库 
-        #region
-        public int LocationWithUpdate(LocationWithModel model)
+        //减去商品数量
+        public int GoodsNumReduce(int lid, int num)
         {
-            string sql = $"update UpdateLocation set LocationWid='{model.LocationWid}',LocationLid='{model.LocationLid}' where LocationWithId='{model.LocationWithId}'";
-            using (SqlConnection connection = new SqlConnection(conStr))
+            string sql = $"update OrderView set ONum=ONum-{num} where LocationWithId={lid}";
+            using (SqlConnection connection=new SqlConnection(conStr))
             {
                 return connection.Execute(sql);
             }
-        } 
-        //显示调库信息
-        public List<LocationWithModel> UpdateLocationShow(int pagIndex, int pagSize, string name, out int pagCount)
-        {
-            string sql = "UpdateLocationPag";
-            //给输出参数赋值
-            pagCount = 0;
-            //实例化一个字典
-            Dictionary<string, object> pairs = new Dictionary<string, object>();
-            pairs.Add("@pagIndex", pagIndex);
-            pairs.Add("@pagSize", pagSize);
-            pairs.Add("@name", name);
-            pairs.Add("@pagCount", pagCount);
-            //调用储存过程
-            DataTable table = dBHelper.GetProc(sql, pairs, out pagCount);
-            //把DataTable转化为List
-            List<LocationWithModel> list = dBHelper.DataTableToList<LocationWithModel>(table);
-            return list;
         }
-        #endregion
     }
 }
-
+#endregion
