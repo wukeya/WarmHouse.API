@@ -153,7 +153,7 @@ namespace UI.API.Controllers
         [HttpGet]
         public  List<EquipmentModel> EquipmentShow(int pagIndex=1, int pagSize=3, string name="")
         {
-            int pagCount = 0;
+            int pagCount = 0;  
             return _ibll.EquipmentShow(pagIndex, pagSize, name, out pagCount);
         }
         //删除设备
