@@ -90,15 +90,20 @@ namespace BLL
         {
             return _idal.EquipmentUpdate(model);
         }
+        //修改设备状态
+        public int EquipmentStateUpdate(int state, int id)
+        {
+            return _idal.EquipmentStateUpdate(state, id);
+        }
         //添加报损
         public int ReportAdd(ReportModel model)
         {
             return _idal.ReportAdd(model);
         }
         //显示报损
-        public List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount)
+        public List<ReportModel> ReportShow(int pagIndex, int pagSize)
         {
-            return _idal.ReportShow(pagIndex, pagSize, out pagCount);
+            return _idal.ReportShow(pagIndex, pagSize);
         }
         //删除报损
         public int ReportShan(string ids)
@@ -160,7 +165,32 @@ namespace BLL
         {
             return _idal.WareHouseShow();
         }
-     
+        //显示仓库详细
+        public List<LocationWithModel> WareHouseDeitShow(int id) 
+        {
+            return _idal.WareHouseDeitShow(id);
+        }
+        //添加仓库
+        public int WarmHouseAdd(WareHouseModel model)
+        {
+            return _idal.WarmHouseAdd(model);
+        }
+        //添加临时库位
+        public int TemLocationAdd(LocationModel model)
+        {
+            return _idal.TemLocationAdd(model);
+        }
+        //显示临时库位
+        public List<LocationModel> TemLocationShow()
+        {
+            return _idal.TemLocationShow();
+        }
+        //清空临时库位
+        public int TemLocationDelete()
+        {
+            return _idal.TemLocationDelete();
+        }
+
         //判断是否入库
         public int IsRuKu(int oid)
         {
@@ -217,6 +247,11 @@ namespace BLL
         {
             return _idal.LocationWithShow(code);
         }
+        //查看全部入库清单详细
+        public List<LocationWithModel> AllLocationWithShow()
+        {
+            return _idal.AllLocationWithShow();
+        }
         //查找出库前商品
         public List<LocationWithModel> BeforeChuKu(int id)
         {
@@ -266,6 +301,11 @@ namespace BLL
         public int DeleteTempRetrievealDeit() 
         {
             return _idal.DeleteTempRetrievealDeit();
+        }
+        //根据库位详情Id减去商品数量
+        public int GoodsNumReduce(int lid, int num) 
+        {
+            return _idal.GoodsNumReduce(lid, num);
         }
     }
 }

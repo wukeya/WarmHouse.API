@@ -17,14 +17,18 @@ namespace BLL.WBll
         }
         //用户 Userd 登录 注册 UserdZhuChe
         #region
-        public UserdModel UserdDenLuint(string username, string userpass)
+        public string SearchPass(string username) 
         {
-            return _idal.UserdDenLuint(username, userpass);
+            return _idal.SearchPass(username);
+        }
+        public UserdModel UserLogin(string name, string pass) 
+        {
+            return _idal.UserLogin(name, pass);
         }
         //注册
-        public UserdModel UserdZhuChe(string username, string userpass)
+        public int UserdZhuChe(UserdModel model)
         {
-            return _idal.UserdZhuChe(username, userpass);
+            return _idal.UserdZhuChe(model);
         }
         #endregion
     }

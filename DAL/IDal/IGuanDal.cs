@@ -26,9 +26,10 @@ namespace DAL.IDal
         int EquipmentShan(string ids);
         EquipmentModel EquipmentFan(int id);
         int EquipmentUpdate(EquipmentModel model);
+        int EquipmentStateUpdate(int state, int id);
         //报损
         int ReportAdd(ReportModel model);
-        List<ReportModel> ReportShow(int pagIndex, int pagSize, out int pagCount);
+        List<ReportModel> ReportShow(int pagIndex, int pagSize);
         int ReportShan(string ids);
         ReportModel ReportFan(int id);
         int ReportUpdate(ReportModel model);
@@ -44,10 +45,22 @@ namespace DAL.IDal
         int OrderUpdateState(int state, int oid);
         //显示仓库
         List<WareHouseModel> WareHouseShow();
+        //显示仓库详情
+        List<LocationWithModel> WareHouseDeitShow(int id);
+        //添加仓库
+        int WarmHouseAdd(WareHouseModel model);
         //添加库位
         int LocationAdd(LocationModel model);
+        //添加临时库位
+        int TemLocationAdd(LocationModel model);
+        //显示临时库位
+        List<LocationModel> TemLocationShow();
+        //清空临时库位
+        int TemLocationDelete();
         //显示库位
         List<LocationModel> LocationShow(int wid);
+        //显示全部库位详情表
+        List<LocationWithModel> AllLocationWithShow();
         //添加库位详
         int LocationWithAdd(LocationWithModel model);
        
@@ -91,7 +104,9 @@ namespace DAL.IDal
         int ReturndAdd(ReturndModel model);
         List<ReturndModel> ReturndShow();
         int ReturndShan(string ids);
-        
+        int GoodsNumReduce(int lid, int num);
+
+
 
 
     }
